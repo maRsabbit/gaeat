@@ -50,7 +50,7 @@
 	
 	<select id="getFollowedList" resultType="com.project.vo.UserpageVo">
 		<![CDATA[
-			select chef_no, nickname, self_intro, password,
+			select chef_no, nickname, self_intro, password, profile,
 					(select count(*) from follow_HISTORY where chef_no=follow_HISTORY.FOLLOWed_ID) as followed_count
 			from chef c, follow_history f
 			where f.followed_id = #{no}
@@ -61,7 +61,7 @@
 	
 	<select id="getFollowingList" resultType="com.project.vo.UserpageVo">
 		<![CDATA[
-			select c.chef_no, c.email, c.password, c.name, c.nickname, c.self_intro, f.reg_date,
+			select c.chef_no, c.email, c.password, c.name, c.nickname, c.self_intro, f.reg_date, profile,
 				   (select count(*) from follow_HISTORY where chef_no=follow_HISTORY.FOLLOWed_ID) as followed_count
 			from chef c, follow_history f
 			where f.following_id = #{no}

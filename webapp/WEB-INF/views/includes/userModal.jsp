@@ -19,11 +19,12 @@
         </div>
         <div class="modal-footer">
           <a href="#" data-dismiss="modal" class="btn">취소</a>
-          <a href="#" class="btn btn-primary">확인</a>
+          <a href="${pageContext.request.contextPath }/userpage/subscriptionPage/${blist.recipebook_no}" class="btn btn-primary">확인</a>
         </div>
       </div>
     </div>
 </div>
+
 <script type="text/javascript">
 $('#openBtn').click(function(){
 	$('#myModal').modal({show:true})

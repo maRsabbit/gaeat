@@ -114,18 +114,18 @@
 					                <div class="col-md-4">
 					                	<div class="artist-data pull-left">
 					                    	<div class="artst-pic pull-left">
-					                    		<a href="#">
-					                    			<img src="${pageContext.request.contextPath}/assets/img/3.png" alt="" class="img-responsive" />
+					                    		<a href="${pageContext.request.contextPath}/userpage/main?chef_no=${followingList.chef_no}">
+					                    			<img src="${followingList.profile}" alt="" class="img-responsive" width="100px" height="100px" style = "border-radius: 10px;"/>
 					                    		</a>
 					                    	</div>
 					                        <div class="artst-prfle pull-right">
 					                        	<div class="art-title">
-					                            	<a href="#" style="font-size:12px; color:black;"><Strong>${followingList.nickname }</Strong></a>
+					                            	<a href="${pageContext.request.contextPath}/userpage/main?chef_no=${followingList.chef_no}" style="font-size:12px; color:black;"><Strong>${followingList.nickname }</Strong></a>
 					                            	<br>
 					                            	<h style="font-size:10px; color:gray;">${followingList.self_intro }</h>
 					                            </div>
 					                            <div class="counter-tab">
-					                            	<span class="artst-like"><a href="#"><i class="glyphicon glyphicon-heart-empty"></i>${followingList.followed_count }</a></span>
+					                            	<span class="artst-like"><a href="${pageContext.request.contextPath}/userpage/followinglist?chef_no=${followingList.chef_no}"><i class="glyphicon glyphicon-heart-empty"></i>${followingList.followed_count }</a></span>
 					                            </div>
 					                        </div>
 					                    </div>

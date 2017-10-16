@@ -16,6 +16,7 @@ import com.project.service.UserpageService;
 import com.project.vo.FollowVo;
 import com.project.vo.RecipeBookListVo;
 import com.project.vo.SocialUserVo;
+import com.project.vo.SubscriptionVo;
 import com.project.vo.UserpageVo;
 
 @Controller
@@ -118,6 +119,8 @@ public class UserpageController {
 		List<UserpageVo> followingList = userpageService.getFollowingList(chef_no);
 		model.addAttribute("followingList", followingList);
 		
+		System.out.println(followingList + "followingList///////////////////////////////////////////////////////////////////");
+		
 		return "user/followinglist";
 	}
 	
@@ -171,5 +174,14 @@ public class UserpageController {
 		return userpageService.addFollow(vo);
 		
 	}
-
+	
+	/*@ResponseBody
+	@RequestMapping(value = "/subscriptionPage")
+	public int subscription(@RequestBody SubscriptionVo vo) {
+		
+		userpageService.addSubscription(vo);
+		
+		return 1;
+	}
+*/
 }
