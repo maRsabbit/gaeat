@@ -125,7 +125,7 @@
 					                            	<h style="font-size:10px; color:gray;">${followedList.self_intro }</h>
 					                            </div>
 					                            <div class="counter-tab">
-					                            	<span class="artst-like"><a href="#"><i class="glyphicon glyphicon-heart-empty"></i>${followedList.followed_count }</a></span>
+					                            	<span class="artst-like"><a href="${pageContext.request.contextPath}/userpage/main?chef_no="><i class="glyphicon glyphicon-heart-empty"></i>${followedList.followed_count }</a></span>
 					                            </div>
 					                        </div>
 					                    </div>
