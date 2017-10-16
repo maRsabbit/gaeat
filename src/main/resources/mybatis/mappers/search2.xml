@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="search2">
+	<!--비로그인 사용자가 검색어 없이 했을 때 -->
+	<select id="getListNlNf" parameterType="com.project.vo.keywordVo"
+		resultType="com.project.vo.RecipeVo">
+		<![CDATA[
+			select r.recipe_no, r.introduction, r.food_img, r.recipe_title, r.chef_no, c.nickname,
+				   r.food_name, r.reg_date, r.cooking_level, r.cooking_time, r.recipebook_no,
+				   r.cooking_method, r.cooking_type, r.food_img, (
+                    select count(*) from LIKE_HISTORY where r.recipe_no=LIKE_HISTORY.recipe_no) as like_count
+			from recipe r, chef c
+			where c.chef_no = r.chef_no and 1=1
+		]]>
+		<if test="type != '종류별'"><!-- 요리바 -->
+			and cooking_type = #{type, jdbcType=VARCHAR}
+		</if>
+
+		<if test="method != '방법별'">
+			and cooking_method = #{method, jdbcType=VARCHAR}
+		</if>
+
+		<if test="level != '난이도'">
+			and cooking_level = #{level, jdbcType=VARCHAR}
+		</if>
+
+		<if test="time != '조리시간'">
+			and cooking_time = #{time, jdbcType=VARCHAR}
+		</if>
+		<choose>
+			<when test="orderOption != '요리명'">
+				order by r.food_name desc, r.recipe_no
+			</when>
+			<when test="orderOption != '제목순'">
+				order by r.recipe_title desc, r.recipe_no
+			</when>
+			<when test="orderOption != '인기순'">
+				order by like_count desc, r.recipe_no
+			</when>
+			<when test="orderOption != '작성자순'">
+				order by r.chef_no desc, r.recipe_no
+			</when>
+			<when test="orderOption != '최신순'">
+				order by r.reg_date desc, r.recipe_no
+			</when>
+			<otherwise>
+				order by r.food_name desc, r.recipe_no
+			</otherwise>
+		</choose>
+	</select>
+
+	<!--//로그인 사용자가 검색어 없이 했을 때 -->
+	<select id="getListLNf" parameterType="com.project.vo.keywordVo"
+		resultType="com.project.vo.RecipeVo">
+		<![CDATA[
+			select r.recipe_no, r.introduction, r.food_img, r.recipe_title, r.chef_no, c.nickname,
+				   r.food_name, r.reg_date, r.cooking_level, r.cooking_time, r.recipebook_no,
+				   r.cooking_method, r.cooking_type, r.food_img, (
+                    select count(*) from LIKE_HISTORY where r.recipe_no=LIKE_HISTORY.recipe_no) as like_count
+			from recipe r, chef c
+			where c.chef_no = r.chef_no and 1=1
+		]]>
+		<if test="type != '종류별'"><!-- 요리바 -->
+			and cooking_type = #{type, jdbcType=VARCHAR}
+		</if>
+
+		<if test="method != '방법별'">
+			and cooking_method = #{method, jdbcType=VARCHAR}
+		</if>
+
+		<if test="level != '난이도'">
+			and cooking_level = #{level, jdbcType=VARCHAR}
+		</if>
+
+		<if test="time != '조리시간'">
+			and cooking_time = #{time, jdbcType=VARCHAR}
+		</if>
+		<if test="f_list_check == 1"> <!-- -검색어+사전에 입력한 데이터롤 필터된 레시피 목록 -->
+			and recipe_no in
+			<foreach collection="f_list" item="item" open="(" close=")"
+				separator=",">
+				#{item}
+			</foreach>
+		</if>
+		<choose>
+			<when test="orderOption != '요리명'">
+				order by r.food_name desc, r.recipe_no
+			</when>
+			<when test="orderOption != '제목순'">
+				order by r.recipe_title desc, r.recipe_no
+			</when>
+			<when test="orderOption != '인기순'">
+				order by like_count desc, r.recipe_no
+			</when>
+			<when test="orderOption != '작성자순'">
+				order by r.chef_no desc, r.recipe_no
+			</when>
+			<when test="orderOption != '최신순'">
+				order by r.reg_date desc, r.recipe_no
+			</when>
+			<otherwise>
+				order by r.food_name desc, r.recipe_no
+			</otherwise>
+		</choose>
+	</select>
+
+
+	<!-- 로그인유무에 상관없이 +검색어가 존재할 경우 -->
+	<!-- <select id="getListF" parameterType="com.project.vo.keywordVo" -->
+	<!-- resultType="com.project.vo.RecipeVo"> -->
+	<!-- <![CDATA[ -->
+	<!-- select r.recipe_no, r.introduction, r.food_img, r.recipe_title, r.chef_no, 
+		c.nickname, -->
+	<!-- r.food_name, r.reg_date, r.cooking_level, r.cooking_time, r.recipebook_no, -->
+	<!-- r.cooking_method, r.cooking_type, r.food_img, ( -->
+	<!-- select count(*) from LIKE_HISTORY where r.recipe_no=LIKE_HISTORY.recipe_no) 
+		as like_count -->
+	<!-- from recipe r, chef c, recipebook rb -->
+	<!-- where c.chef_no = r.chef_no and r.recipebook_no = rb.recipebook_no 
+		and 1=1 -->
+	<!-- ]]> -->
+	<!-- <if test="type != '종류별'">요리바 -->
+	<!-- and cooking_type = #{type, jdbcType=VARCHAR} -->
+	<!-- </if> -->
+
+	<!-- <if test="method != '방법별'"> -->
+	<!-- and cooking_method = #{method, jdbcType=VARCHAR} -->
+	<!-- </if> -->
+
+	<!-- <if test="level != '난이도'"> -->
+	<!-- and cooking_level = #{level, jdbcType=VARCHAR} -->
+	<!-- </if> -->
+
+	<!-- <if test="time != '조리시간'"> -->
+	<!-- and cooking_time = #{time, jdbcType=VARCHAR} -->
+	<!-- </if> -->
+	<!-- <if test="f_list_check == 1"> -검색어+사전에 입력한 데이터롤 필터된 레시피 목록 -->
+	<!-- and recipe_no in -->
+	<!-- <foreach collection="f_list" item="item" open="(" close=")" -->
+	<!-- separator=","> -->
+	<!-- #{item} -->
+	<!-- </foreach> -->
+	<!-- </if> -->
+	<!-- <검색키워드들로 검색 전체를 키워드가 -->
+	<!-- 비교대상 : 요리명, 레시피제목, 닉네임, 요리책 -->
+	<!-- <if test="p_word_check == 1"> -->
+	<!-- or -->
+	<!-- <foreach collection="p_word" item="item" index="index" open="(" -->
+	<!-- close=")" separator="and"> -->
+	<!-- r.food_name like '%'||#{item}||'%' -->
+	<!-- </foreach> -->
+
+	<!-- or -->
+	<!-- <foreach collection="p_word" item="item" index="index" open="(" -->
+	<!-- close=")" separator="and"> -->
+	<!-- r.recipe_title like '%'||#{item}||'%' -->
+	<!-- </foreach> -->
+
+	<!-- or -->
+	<!-- <foreach collection="p_word" item="item" index="index" open="(" -->
+	<!-- close=")" separator="and"> -->
+	<!-- c.nickname like '%'||#{item}||'%' -->
+	<!-- </foreach> -->
+
+	<!-- or -->
+	<!-- <foreach collection="p_word" item="item" index="index" open="(" -->
+	<!-- close=")" separator="and"> -->
+	<!-- rb.recipebook_name like '%'||#{item}||'%' -->
+	<!-- </foreach> -->
+	<!-- </if> -->
+	<!-- <choose> -->
+	<!-- <when test="orderOption != '요리명'"> -->
+	<!-- order by r.food_name desc, r.recipe_no -->
+	<!-- </when> -->
+	<!-- <when test="orderOption != '제목순'"> -->
+	<!-- order by r.recipe_title desc, r.recipe_no -->
+	<!-- </when> -->
+	<!-- <when test="orderOption != '인기순'"> -->
+	<!-- order by like_count desc, r.recipe_no -->
+	<!-- </when> -->
+	<!-- <when test="orderOption != '작성자순'"> -->
+	<!-- order by r.chef_no desc, r.recipe_no -->
+	<!-- </when> -->
+	<!-- <when test="orderOption != '최신순'"> -->
+	<!-- order by r.reg_date desc, r.recipe_no -->
+	<!-- </when> -->
+	<!-- <otherwise> -->
+	<!-- order by r.food_name desc, r.recipe_no -->
+	<!-- </otherwise> -->
+	<!-- </choose> -->
+
+	<!-- </select> -->
+
+	<!--//로그인유무에 상관없이 +검색어가 존재할 경우 -->
+	<select id="getListF" parameterType="com.project.vo.keywordVo"
+		resultType="com.project.vo.RecipeVo">
+		<![CDATA[
+			select r.recipe_no, r.introduction, r.food_img, r.recipe_title, r.chef_no, c.nickname,
+				   r.food_name, r.reg_date, r.cooking_level, r.cooking_time, r.recipebook_no,
+				   r.cooking_method, r.cooking_type, r.food_img, (
+                    select count(*) from LIKE_HISTORY where r.recipe_no=LIKE_HISTORY.recipe_no) as like_count
+			from recipe r, chef c, recipebook rb
+			where c.chef_no = r.chef_no and r.recipebook_no = rb.recipebook_no and 1=1
+		]]>
+		<if test="type != '종류별'"><!-- 요리바 -->
+			and cooking_type = #{type, jdbcType=VARCHAR}
+		</if>
+
+		<if test="method != '방법별'">
+			and cooking_method = #{method, jdbcType=VARCHAR}
+		</if>
+
+		<if test="level != '난이도'">
+			and cooking_level = #{level, jdbcType=VARCHAR}
+		</if>
+
+		<if test="time != '조리시간'">
+			and cooking_time = #{time, jdbcType=VARCHAR}
+		</if>
+		<if test="f_list_check == 1"> <!-- -검색어+사전에 입력한 데이터롤 필터된 레시피 목록 -->
+			and recipe_no in
+			<foreach collection="f_list" item="item" open="(" close=")"
+				separator=",">
+				#{item}
+			</foreach>
+		</if>
+		<!--검색키워드들로 검색 전체를 키워드가 -->
+		<!--비교대상 : 요리명, 레시피제목, 닉네임, 요리책 -->
+		<if test="p_word_check == 1">
+			or
+			<foreach collection="p_word" item="item" index="index" open="("
+				close=")" separator="or">
+				r.recipe_title like '%'||#{item}||'%'
+			</foreach>
+			or
+			<foreach collection="p_word" item="item" index="index" open="("
+				close=")" separator="or">
+				rb.recipebook_name like '%'||#{item}||'%'
+			</foreach>
+		</if>
+		<choose>
+			<when test="orderOption != '요리명'">
+				order by r.food_name desc, r.recipe_no
+			</when>
+			<when test="orderOption != '제목순'">
+				order by r.recipe_title desc, r.recipe_no
+			</when>
+			<when test="orderOption != '인기순'">
+				order by like_count desc, r.recipe_no
+			</when>
+			<when test="orderOption != '작성자순'">
+				order by r.chef_no desc, r.recipe_no
+			</when>
+			<when test="orderOption != '최신순'">
+				order by r.reg_date desc, r.recipe_no
+			</when>
+			<otherwise>
+				order by r.food_name desc, r.recipe_no
+			</otherwise>
+		</choose>
+
+	</select>
+
+	<!--//로그인유무에 상관없이 +검색어가 존재할 경우 -->
+	<select id="getListbykeyOnlyMf" parameterType="com.project.vo.keywordVo"
+		resultType="com.project.vo.RecipeVo">
+		<![CDATA[
+			select r.recipe_no, r.introduction, r.food_img, r.recipe_title, r.chef_no, c.nickname,
+				   r.food_name, r.reg_date, r.cooking_level, r.cooking_time, r.recipebook_no,
+				   r.cooking_method, r.cooking_type, r.food_img, (
+                    select count(*) from LIKE_HISTORY where r.recipe_no=LIKE_HISTORY.recipe_no) as like_count
+			from recipe r, chef c, recipebook rb
+			where c.chef_no = r.chef_no and r.recipebook_no = rb.recipebook_no and 1=1
+		]]>
+		<if test="type != '종류별'"><!-- 요리바 -->
+			and cooking_type = #{type, jdbcType=VARCHAR}
+		</if>
+
+		<if test="method != '방법별'">
+			and cooking_method = #{method, jdbcType=VARCHAR}
+		</if>
+
+		<if test="level != '난이도'">
+			and cooking_level = #{level, jdbcType=VARCHAR}
+		</if>
+
+		<if test="time != '조리시간'">
+			and cooking_time = #{time, jdbcType=VARCHAR}
+		</if>
+		<if test="f_list_check == 1"> <!-- -검색어+사전에 입력한 데이터롤 필터된 레시피 목록 -->
+			and recipe_no in
+			<foreach collection="f_list" item="item" open="(" close=")"
+				separator=",">
+				#{item}
+			</foreach>
+		</if>
+		<choose>
+			<when test="orderOption != '요리명'">
+				order by r.food_name desc, r.recipe_no
+			</when>
+			<when test="orderOption != '제목순'">
+				order by r.recipe_title desc, r.recipe_no
+			</when>
+			<when test="orderOption != '인기순'">
+				order by like_count desc, r.recipe_no
+			</when>
+			<when test="orderOption != '작성자순'">
+				order by r.chef_no desc, r.recipe_no
+			</when>
+			<when test="orderOption != '최신순'">
+				order by r.reg_date desc, r.recipe_no
+			</when>
+			<otherwise>
+				order by r.food_name desc, r.recipe_no
+			</otherwise>
+		</choose>
+	</select>
+
+	<!--태그 검색 -->
+	<select id="getListTag" parameterType="com.project.vo.keywordVo"
+		resultType="com.project.vo.RecipeVo">
+		<![CDATA[
+			select r.recipe_no, r.introduction, r.food_img, r.recipe_title, r.chef_no, c.nickname,
+				   r.food_name, r.reg_date, r.cooking_level, r.cooking_time, r.recipebook_no,
+				   r.cooking_method, r.cooking_type, r.food_img, (
+                    select count(*) from LIKE_HISTORY where r.recipe_no=LIKE_HISTORY.recipe_no) as like_count
+			from recipe r, chef c
+			where c.chef_no = r.chef_no and 1=1
+		]]>
+		<if test="f_list_check == 1"> <!-- -검색어+사전에 입력한 데이터롤 필터된 레시피 목록 -->
+			and recipe_no in
+			<foreach collection="f_list" item="item" open="(" close=")"
+				separator=",">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<!--전체 재료 리스트를 반환 -->
+	<select id="selectMList" resultType="com.project.vo.RecipeVo">
+		<![CDATA[
+			select r.RECIPE_NO, LISTAGG(mh.MATERIAL_NO, ',') WITHIN group(order by mh.MATERIAL_NO) material
+			from recipe r, MATERIAL_HISTORY mh
+			where r.recipe_no = mh.recipe_no
+			group by r.RECIPE_NO
+		]]>
+	</select>
+
+	<!--선택된 재료 리스트를 반환 -->
+	<select id="getTag" resultType="com.project.vo.RecipeVo">
+		<![CDATA[
+			select r.RECIPE_NO, LISTAGG(th.tag_NO, ',') WITHIN group(order by th.tag_NO) tag
+			from recipe r, tag_HISTORY th
+			where r.recipe_no = th.recipe_no
+			group by r.RECIPE_NO
+			]]>
+	</select>
+
+	<!--선택된 재료 리스트를 반환 -->
+	<select id="getTag2" parameterType="List" resultType="com.project.vo.RecipeVo">
+		<![CDATA[
+			select r.RECIPE_NO, LISTAGG(th.tag_NO, ',') WITHIN group(order by th.tag_NO) tag
+			from recipe r, tag_HISTORY th
+			where r.recipe_no = th.recipe_no and r.recipe_no in
+			]]>
+		<foreach collection="list" item="item" open="("
+			close=") group by r.RECIPE_NO" separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<!--선택된 재료 리스트의 태그를 반환 -->
+	<select id="selectMList2" parameterType="List"
+		resultType="com.project.vo.RecipeVo">
+		<![CDATA[
+			select r.RECIPE_NO, LISTAGG(mh.MATERIAL_NO, ',') WITHIN group(order by mh.MATERIAL_NO) material
+			from recipe r, MATERIAL_HISTORY mh
+			where r.recipe_no = mh.recipe_no and r.recipe_no in
+			]]>
+		<foreach collection="list" item="item" open="("
+			close=") group by r.RECIPE_NO" separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<!-- -키워드로 검색된 것들 중에 없는 재료들을 재료 테이블에 추가한다. -->
+	<insert id="insertNewMaterial" parameterType="String">
+		MERGE into material
+		using dual on (material_name = #{material})
+		when not matched then
+		insert(material_no, material_name) values(SEQUENCE_m.nextval,
+		#{material_name})
+	</insert>
+
+	<!-- -키워드로 검색된 것들 중에 없는 재료들을 재료 테이블에 추가한다. -->
+	<insert id="insertNewTag" parameterType="String">
+		MERGE into tag using
+		dual
+		on (tag_name = #{tag})
+		when not matched then
+		insert(tag_no,
+		tag_name) values(SEQUENCE_t.nextval, #{tag_name})
+	</insert>
+
+	<!-- 특정 번호의 레시피들 반환 -->
+	<select id="getMaterialNo" parameterType="List" resultType="String">
+		<![CDATA[
+			select listagg(material_no, ',') within group(order by material_no) material_no
+			from material
+			where material_name in
+		]]>
+		<foreach collection="list" item="item" open="(" close=")"
+			separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<!-- 특정 태그들의 번호들 반환 -->
+	<select id="getTagNo" parameterType="List" resultType="String">
+		<![CDATA[
+			select listagg(tag_no, ',') within group(order by tag_no) tag_no
+			from tag
+			where tag_name in
+		]]>
+		<foreach collection="list" item="item" open="(" close=")"
+			separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 요리명의 레시피들 반환 -->
+	<select id="confirmTitle" parameterType="List" resultType="String">
+		<![CDATA[
+			select listagg(recipe_no, ',') within group(order by recipe_no) reipce_no
+			from recipe
+			where food_name in
+		]]>
+		<foreach collection="list" item="item" open="(" close=")"
+			separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 특정사람의 레시피들 반환 -->
+	<select id="confirmNickname" parameterType="List" resultType="String">
+		<![CDATA[
+			select listagg(recipe_no, ',') within group(order by recipe_no) reipce_no
+			from recipe r, chef c
+			where r.chef_no= c.chef_no and c.nickname in
+		]]>
+		<foreach collection="list" item="item" open="(" close=")"
+			separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 특정 재료의 레시피들 반환 -->
+	<select id="confirmMaterial" parameterType="List" resultType="String">
+		<![CDATA[
+			select listagg(r.recipe_no, ',') within group(order by r.recipe_no) reipce
+			from recipe r, MATERIAL_HISTORY mh, MATERIAL m
+			where mh.recipe_no=r.recipe_no and 
+     			  m.MATERIAL_NO = mh.MATERIAL_NO and 
+      			  m.MATERIAL_NAME in 
+		]]>
+		<foreach collection="list" item="item" open="(" close=")"
+			separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+
+	<!-- 모든 레시피들의 번호들 반환 -->
+	<select id="getAllrecipeNo" resultType="String">
+		<![CDATA[
+			select listagg(recipe_no, ',') within group(order by recipe_no) recipe_no
+			from recipe
+		]]>
+	</select>
+
+	<!-- 모든 레시피들의 번호들 반환 -->
+	<select id="getListByTag" parameterType="int" resultType="String">
+		<![CDATA[
+			select listagg(r.recipe_no, ',') within group(order by r.recipe_no) reipce_no
+			from recipe r, tag_history th
+			where  r.recipe_no=th.RECIPE_NO and
+			th.tag_no = #{tag_no}
+		]]>
+	</select>
+	<!-- 특정 사용자의 불호재료 목록을 반환 -->
+	<select id="getdislikelist" parameterType="int"
+		resultType="com.project.vo.RecipeVo">
+		<![CDATA[
+			select chef_no, LISTAGG(material, ',') WITHIN group(order by material) material
+			from dislike
+			where chef_no = #{user_no}
+             group by chef_no
+		]]>
+	</select>
+
+	<!-- 특정 사용자의 불호재료 목록을 반환 -->
+	<select id="getdislikelist2" parameterType="int" resultType="String">
+		<![CDATA[
+			select LISTAGG(material, ',') WITHIN group(order by material) material
+			from dislike
+			where chef_no = #{user_no}
+		]]>
+	</select>
+
+
+	<!-- dislike 재료를 포함한 레시피의 번호를 리턴한다. -->
+	<select id="getdislikerecipeNo" parameterType="List" resultType="String">
+		<![CDATA[
+		select listagg(recipe_no, ',') within group(order by recipe_no) reipce
+		from (select DISTINCT r.RECIPE_NO
+        	  from recipe r, MATERIAL_HISTORY mh
+        	  where mh.recipe_no=r.recipe_no and 
+      		  		mh.MATERIAL_no in 
+		]]>
+		<foreach collection="list" item="item" open="(to_number("
+			close=")))" separator="),to_number(">
+			#{item}
+		</foreach>
+		
+	</select>
+
+	<select id="getTopTag" resultType="com.project.vo.TagVo">
+		<![CDATA[
+		select rn, tag_no, tag_name, tag_count
+		from( select rownum rn, tag_no, tag_name, tag_count
+    		  from ( select DISTINCT th.tag_no as tag_no, t.tag_name as tag_name,
+    		  				 (select count(*) from tag_HISTORY
+    		  				  where t.tag_no=tag_HISTORY.tag_no) as tag_count
+					  from tag t, tag_history th
+					  where t.tag_no = th.tag_no and 
+					  		th.reg_date <=sysdate and th.REG_DATE >= add_months(sysdate,-5)
+					  order by tag_count desc))
+		where rn<7
+		]]>
+	</select>
+
+	<!--//로그인유무에 상관없이 +검색어가 존재할 경우 -->
+	<select id="getLength" parameterType="com.project.vo.keywordVo"
+		resultType="com.project.vo.RecipeVo">
+		<![CDATA[
+			select count(*)
+			from recipe r, chef c, recipebook rb
+			where c.chef_no = r.chef_no and r.recipebook_no = rb.recipebook_no and 1=1
+		]]>
+		<if test="type != '종류별'"><!-- 요리바 -->
+			and cooking_type = #{type, jdbcType=VARCHAR}
+		</if>
+
+		<if test="method != '방법별'">
+			and cooking_method = #{method, jdbcType=VARCHAR}
+		</if>
+
+		<if test="level != '난이도'">
+			and cooking_level = #{level, jdbcType=VARCHAR}
+		</if>
+
+		<if test="time != '조리시간'">
+			and cooking_time = #{time, jdbcType=VARCHAR}
+		</if>
+		<if test="f_list_check == 1"> <!-- -검색어+사전에 입력한 데이터롤 필터된 레시피 목록 -->
+			and recipe_no in
+			<foreach collection="f_list" item="item" open="(" close=")"
+				separator=",">
+				#{item}
+			</foreach>
+		</if>
+		<!--검색키워드들로 검색 전체를 키워드가 -->
+		<!--비교대상 : 요리명, 레시피제목, 닉네임, 요리책 -->
+		<if test="p_word_check == 1">
+			or
+			<foreach collection="p_word" item="item" index="index" open="("
+				close=")" separator="or">
+				r.recipe_title like '%'||#{item}||'%'
+			</foreach>
+			or
+			<foreach collection="p_word" item="item" index="index" open="("
+				close=")" separator="or">
+				rb.recipebook_name like '%'||#{item}||'%'
+			</foreach>
+		</if>
+	</select>
+
+</mapper>

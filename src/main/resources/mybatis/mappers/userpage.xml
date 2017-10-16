@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userpage">
+
+		<resultMap id="resultMapList" type="com.project.vo.UserpageVo">
+			<result column = "chef_no" property="chef_no" />
+			<result column = "name" property="name" />
+			<result column = "nickname" property="nickname" />
+			<result column = "self_intro" property="self_intro" />
+			<result column = "recipebook_name" property="recipebook_name" />
+			<result column = "recipebook_no" property="recipebook_no" />
+			<result column = "recipe_title" property="recipe_title" />
+			<result column = "introduction" property="introduction" />
+		</resultMap>
+
+	<select id="selectUserByNo" parameterType="int" resultType="com.project.vo.UserpageVo">
+	    <![CDATA[
+		    select chef_no, email, name, nickname, self_intro, profile,
+		   		(select count(*) from follow_HISTORY where chef_no=follow_HISTORY.FOLLOWED_ID) as followed_count,
+		   		(select count(*) from follow_HISTORY where chef_no=follow_HISTORY.FOLLOWing_ID) as following_count
+			from chef
+			where chef_no = #{no}
+	    ]]>
+	</select>
+	
+	<select id="getRecipebookList" resultType="com.project.vo.UserpageVo">
+		<![CDATA[
+			SELECT distinct rb.recipebook_no, rb.recipebook_name, c.chef_no,
+            	(select count(*) from SUBSCRIPTION_HISTORY where rb.recipebook_no= recipebook_no) as subscription_count
+			FROM chef c
+			JOIN recipe r
+			ON c.chef_no = r.chef_no
+			JOIN recipebook rb
+			ON rb.recipebook_no = r.recipebook_no
+			WHERE c.chef_no = #{no}
+			order by rb.recipebook_no asc
+		]]>
+	</select>
+	
+	<select id="getRecipeList" resultType="com.project.vo.UserpageVo">
+		<![CDATA[
+			select r.recipe_no, r.introduction, r.recipe_title, r.chef_no, c.nickname, r.reg_date, r.recipebook_no,
+              	   (select count(*) from LIKE_HISTORY where r.recipe_no=LIKE_HISTORY.recipe_no) as like_count
+	         from recipe r, chef c
+	         where c.chef_no = #{no}
+	         and c.chef_no = r.chef_no 
+	         order by r.recipe_no desc
+		]]>
+	</select>
+	
+	<select id="getFollowedList" resultType="com.project.vo.UserpageVo">
+		<![CDATA[
+			select chef_no, nickname, self_intro, password,
+					(select count(*) from follow_HISTORY where chef_no=follow_HISTORY.FOLLOWed_ID) as followed_count
+			from chef c, follow_history f
+			where f.followed_id = #{no}
+			and c.chef_no = f.following_id
+			order by f.reg_date desc
+		]]>
+	</select>
+	
+	<select id="getFollowingList" resultType="com.project.vo.UserpageVo">
+		<![CDATA[
+			select c.chef_no, c.email, c.password, c.name, c.nickname, c.self_intro, f.reg_date,
+				   (select count(*) from follow_HISTORY where chef_no=follow_HISTORY.FOLLOWed_ID) as followed_count
+			from chef c, follow_history f
+			where f.following_id = #{no}
+			and c.chef_no = f.followed_id
+            order by f.reg_date desc
+		]]>
+	</select>
+	
+	<select id="getScrapList" resultType="com.project.vo.UserpageVo">
+		<![CDATA[
+			SELECT s.chef_no, c.chef_no, c.nickname, c.self_intro, r.recipe_title, r.introduction, s.reg_date,
+			    (select count(*) from LIKE_HISTORY where s.recipe_no=LIKE_HISTORY.recipe_no) as like_count
+			FROM scrap_recipe s
+			JOIN recipe r
+			ON s.recipe_no = r.recipe_no
+			JOIN chef c
+			ON r.chef_no = c.chef_no
+			WHERE s.chef_no = #{no}
+			order by s.reg_date desc 
+		]]>
+	</select>
+	
+	<select id = "selectRecipeNoDelete" parameterType = "int" resultType = "int">
+		select recipe_no from recipe
+		where recipebook_No = #{no}
+	</select>
+	
+	<delete id = "deleteContents" parameterType = "int">
+		delete from content
+		where recipe_No = #{number}
+	</delete>
+	
+	<delete id = "deleteComments" parameterType = "int">
+		delete from user_comment
+		where recipe_no = #{number}
+	</delete>
+	
+	<delete id = "deleteRecipe" parameterType = "int">
+		delete from recipe
+		where recipe_no = #{number}
+	</delete>
+	
+	<delete id = "removeCategory" parameterType = "int">
+		<![CDATA[
+			delete from recipebook
+			where recipebook_no = #{no}
+		]]>
+	</delete>
+	
+	<insert id = "addCategory" parameterType = "com.project.vo.RecipeBookListVo">
+		
+		<selectKey keyProperty="recipebookNo" resultType="int" order ="BEFORE">
+        		select seq_recipebook_num.nextval from dual
+    	</selectKey>
+		
+		<![CDATA[
+			insert into recipebook
+			values(
+			#{recipebookNo},
+			#{recipebookName},
+			#{chefNo}
+			)
+		]]>
+	</insert>
+	
+<!-- 	<select id = "selectUserId" parameterType = "int" resultType = "String" >
+		<![CDATA[
+			select nickname
+			from chef
+			where chef_no = #{no}
+		]]>
+	</select> -->
+	
+	<insert id = "addFollow" parameterType = "com.project.vo.FollowVo">
+		<![CDATA[
+			insert into follow_history
+			values(
+			follow_seq.NEXTVAL,
+			#{chef_no},
+			#{user_no},
+			sysdate)
+		]]>
+	</insert>
+</mapper>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="readform">
+<resultMap id="resultMapList" type="com.project.vo.UserpageVo">
+			<result column = "chef_no" property="chef_no" />
+			<result column = "name" property="name" />
+			<result column = "nickname" property="nickname" />
+			<result column = "self_intro" property="self_intro" />
+			<result column = "recipebook_name" property="recipebook_name" />
+			<result column = "recipebook_no" property="recipebook_no" />
+			<result column = "recipe_title" property="recipe_title" />
+			<result column = "introduction" property="introduction" />
+		</resultMap>
+
+
+ <!-- readform시 작동하는 xml -->
+	<select id="list" parameterType="com.project.vo.ReadformVo" resultType="com.project.vo.ReadformVo">
+	    <![CDATA[
+	    select oreder_no,text_content,img_content
+	    from content
+	    where recipe_no=#{recipe_no}
+	    order by oreder_no asc
+	    
+    ]]>
+
+	</select>
+	
+	  <select id="getByteNo" parameterType="com.project.vo.DatVo" resultType="com.project.vo.DatVo">
+    <![CDATA[
+    select uc.user_comment,uc.comment_no,c.nickname,c.chef_no,c.profile
+    from user_comment uc,chef c
+    where c.chef_no=uc.chef_no
+    and recipe_no=#{recipe_no}
+    order by comment_no desc
+    ]]>
+
+     </select>
+     
+    <select id="getread" parameterType="com.project.vo.ReadformVo" resultType="com.project.vo.ReadformVo">
+    
+    <![CDATA[
+    select recipe_title,introduction,cooking_level,cooking_time,recipe_no,amount,food_img
+    from recipe 
+    where recipe_no=#{recipe_no}
+    ]]>
+
+     </select>
+     
+     <select id="getmaterial" parameterType="com.project.vo.ReadformVo" resultType="com.project.vo.ReadformVo">
+	    <![CDATA[
+	   select ma.material_name,mh.amount
+	    from material_history mh,material ma
+	    where mh.material_no=ma.material_no
+	    and mh.recipe_no=#{recipe_no}
+	    
+    ]]>
+
+	</select>
+	
+	<select id="selectUserByNo" parameterType="int" resultType="com.project.vo.UserpageVo">
+	    <![CDATA[
+		    select chef_no, email, password, name, nickname, self_intro,
+		   		(select count(*) from follow_HISTORY where chef_no=follow_HISTORY.FOLLOWED_ID) as followed_count,
+		   		(select count(*) from follow_HISTORY where chef_no=follow_HISTORY.FOLLOWing_ID) as following_count
+			from chef
+			where chef_no = #{chef_no}
+	    ]]>
+	</select>
+	
+	<select id="getRecipebookList" resultType="com.project.vo.UserpageVo">
+		<![CDATA[
+			SELECT r.recipebook_no, r.recipebook_name, c.chef_no, 
+			     (select count(*) from SUBSCRIPTION_HISTORY where r.recipebook_no= s.recipebook_no) as subscription_count
+			FROM chef c
+			JOIN subscription_history s
+			ON c.chef_no = s.chef_no
+			JOIN recipebook r
+			ON r.recipebook_no = s.recipebook_no
+			WHERE c.chef_no = #{chef_no}
+			order by s.reg_date desc 
+		]]>
+	</select>
+	
+	
+	
+     
+     
+     
+   <!-- readform시 작동하는 xml 끝-->  
+     
+     
+     
+     
+     
+	
+     <insert id="insertNo" parameterType="com.project.vo.DatVo">
+     
+    
+     <![CDATA[
+    insert into user_comment
+    values(seq_comment_no.nextval,#{chef_no},#{recipe_no},#{user_comment},sysdate  
+           )
+     
+     ]]>
+     
+     </insert>
+          
+     
+     <select id="selectByno" parameterType="com.project.vo.DatVo" resultType="com.project.vo.DatVo"><!-- resultType이 int인 경우 controller에서 받아줘야한다. -->
+     
+     <![CDATA[
+    select user_comment
+	    from user_comment
+	    where recipe_no=#{recipe_no}
+    
+    ]]>
+     
+     </select>
+     
+     <!-- delete -->
+     <delete id="delete" parameterType="com.project.vo.DatVo">
+     <![CDATA[
+     delete from user_comment
+     where comment_no=#{comment_no}
+     
+          
+     ]]>
+     
+     
+     </delete>
+     
+     
+     
+     
+     
+    
+     
+    
+</mapper>
+

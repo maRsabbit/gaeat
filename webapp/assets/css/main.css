@@ -1,0 +1,156 @@
+-- header --
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400);
+
+@font-face{
+	
+	font-family:'NanumBarunGothic';
+	src:url("../fonts/NanumBarunGothic.eot");
+	src:local(""),url("../fonts/NanumBarunGothic.woff") format("woff");
+	
+}
+
+a.hover {text-decoratioin: none;}
+body {font-family: "NanumBarunGothic",  sans-serif; padding-top: 90px; }  
+.container-fluid { padding: 0;}
+
+
+/* nav bar customize */
+.navbar{ background-color: #EBFFEB; border: none; padding-bottom: 10px;  font-family: 'Source Sans Pro', sans-serif; font-weight: 300; 
+		font-size: 18px;height: 60px; text-transform: capitalize; border-bottom: 1px solid #AAAAAA;}
+
+.navbar-toggle {position: relative;margin-top: 40px;top: 2px;}
+.navbar-nav { padding-right: 10px;margin-top: 20px; background-color: #fff}
+.navbar-nav li { margin:0 20px; }
+.navbar-collapse { padding-top: 10px; background-color: #fff}
+.navbar-default .navbar-nav>li>a:hover { color: #FF8000} 
+.navbar-default .navbar-nav>li.active>a,
+.navbar-default .navbar-nav>li.active>a:hover,
+.navbar-default .navbar-nav>li.active>a:focus
+ { color: #FF8000; background-color: #fff} 
+
+.control { position: inherit; top: 50%; z-index: 5; display: inline-block; right: 50%;} 
+
+@media (max-width: 320px)  {
+  .navbar-brand img { width: 80%; height: auto; margin-top:-100px}  
+}
+@media (max-width: 980px) {
+  .navbar-nav li { margin:0 10px;}
+}
+
+.sidenav {
+	height: 100%;
+	width: 0;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: #111;
+	overflow-x: hidden;
+	transition: 0.5s;
+	padding-top: 60px;
+}
+
+.sidenav a {
+	padding: 8px 8px 8px 32px;
+	text-decoration: none;
+	font-size: 20px;
+	color: #c0c0c0;
+	display: block;
+	transition: 0.3s;
+}
+
+.sidenav a:hover, .offcanvas a:focus {
+	color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+	position: absolute;
+	top: 0;
+	right: 25px;
+	font-size: 36px;
+	margin-left: 50px;
+}
+
+
+@media screen and (max-height: 450px) {
+	.sidenav {
+		padding-top: 15px;
+	}
+	.sidenav a {
+		font-size: 10px;
+	}
+}
+
+/* search부분 */
+   #custom-search-input {
+        margin:0;
+        margin-top: 10px;
+        padding: 0;
+    }
+ 
+    #custom-search-input .search-query {
+        padding-right: 3px;
+        padding-right: 4px \9;
+        padding-left: 3px;
+        padding-left: 4px \9;
+        /* IE7-8 doesn't have border-radius, so don't indent the padding */
+ 
+        margin-bottom: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+ 
+    #custom-search-input button {
+        border: 0;
+        background: none;
+        /** belows styles are working good */
+        padding: 2px 5px;
+        margin-top: 2px;
+        position: relative;
+        left: -28px;
+        /* IE7-8 doesn't have border-radius, so don't indent the padding */
+        margin-bottom: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        color:#528540;
+    }
+ 
+    .search-query:focus + button {
+        z-index: -1;   
+    }
+    
+    /* 캐러셀 부분 */
+    
+	#carousel-generic .carousel-inner {
+				
+					height: 500px;
+					width: auto;
+			
+					}
+    
+    /* service부분 , 트렌드 부분 */
+    
+    .service .trendBlock{
+    display:block;
+    margin-bottom:40px;
+    }
+    
+    .service .trendImage {
+    float:top;
+    margin-top:40px;
+    }
+    
+    .service .trendText{
+    padding: 20px;
+    text-color: #528540;
+    }
+    
+    .service a:hover .trendText {text-color:red;}
+    
+    
+    
+    
+    
+    

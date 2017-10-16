@@ -1,0 +1,20 @@
+@charset "UTF-8";
+#table {
+    border-radius: 10px;
+    background-color: #bec9db;
+    margin-bottom: 5px;
+    }
+td{
+    padding: 5px;
+}
+
+#add{
+    border-radius: 5px;
+    background-color: #96ceb4;
+}
+
+#remove{
+    border-radius: 5px;
+    background-color: #ff6f69;
+    
+}

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="login">
+<insert id="Sosialinsert" parameterType ="com.project.vo.SocialUserVo">
+		<![CDATA[
+		 insert into chef values(chef_seq.nextval,#{Id},0,#{name},null,#{profile},'안녕하세요.자기소개를 작성해 주세요','s','none')
+		 ]]>
+	</insert>
+	
+	<insert id="Userinsert" parameterType ="com.project.vo.SocialUserVo">
+		<![CDATA[
+		 insert into chef values(chef_seq.nextval, #{Id}, #{password}, #{name}, #{nickname}, #{profile}, #{userintro}, 'none','none')
+		 ]]>
+	</insert>
+	
+	<select id = "selectUser" parameterType = "com.project.vo.SocialUserVo" resultType= "com.project.vo.SocialUserVo">
+		 <![CDATA[
+		 		select profile profile ,email Id,name ,nickname,social_check socialcheck,chef_no ,self_intro userintro,type from chef where email =#{Id}
+		 ]]>
+	</select>
+	
+	<select id = "selectUser1" parameterType = "com.project.vo.SocialUserVo" resultType= "com.project.vo.SocialUserVo">
+		 <![CDATA[
+		 		select profile profile ,email Id,name ,nickname,social_check socialcheck,chef_no ,self_intro userintro, type  from chef where email =#{Id} and password=#{password}
+		 ]]>
+	</select>
+	
+	<select id = "ingredients" resultType = "String">
+	<![CDATA[
+		select material_name from material
+	]]>
+	</select>
+	
+	
+	<insert id="RecipeBookinsert" >
+		<![CDATA[
+		 insert into recipebook values(recipebook_seq.nextval,'나의 첫번째 레시피북')
+		 ]]>
+	</insert>
+	
+	
+	<update id="Userupdate" parameterType = "com.project.vo.SocialUserVo">
+		<![CDATA[
+		update chef set email =#{Id} , name=#{name}, nickname=#{nickname} ,profile=#{profile},self_intro=#{userintro},social_check=#{socialcheck} ,type= #{type}]]>
+			<if test="password!=null and password!=''">
+			,password=#{password} 
+			</if>
+		<![CDATA[where chef_no=#{chef_no} ]]>
+		<!--
+		MERGE into dislike using dual
+		on (chef_no = #{chef_no} and meterial_no=#{meterial_no})
+		when not matched then
+		insert(dislie_no,chef_no,MATERIAL_NO) values(MATERIAL_NO_seq.nextval,#{chef_no},#{MATERIAL_NO})
+		 -->
+	</update>
+	
+		<update id="dislikeupdate" parameterType = "com.project.vo.SocialUserVo">
+		<![CDATA[
+		MERGE into dislike using dual
+		on (chef_no = #{chef_no} and MATERIAL=#{hatefood})
+		when not matched then
+		insert(dislike_no,chef_no,MATERIAL) values(MATERIAL_seq.nextval,#{chef_no},#{hatefood})
+		
+		
+		
+		]]>
+		<!--
+		MERGE into dislike using dual
+		on (chef_no = #{chef_no} and meterial_no=#{meterial_no})
+		when not matched then
+		insert(dislie_no,chef_no,MATERIAL_NO) values(MATERIAL_NO_seq.nextval,#{chef_no},#{MATERIAL_NO})
+		 -->
+	</update>
+	<update id="hatefoodupdate">
+		<![CDATA[
+		update dislike set email =#{Id} , name=#{name}, nickname=#{nickname} ,profile=#{profile},self_intro=#{userintro},social_check=#{socialcheck} ,type= #{type}]]>
+			<if test="password!=null and password!=''">
+			,password=#{password} 
+			</if>
+		<![CDATA[where chef_no=#{chef_no} ]]>
+	</update>
+	
+	
+	<delete id="hatefooddelete" parameterType="com.project.vo.SocialUserVo" >
+	<![CDATA[
+		delete from dislike where chef_no =#{chef_no} and material= #{hatefood}
+
+	]]>
+	</delete>
+
+	<select id="hatefoodselect" parameterType="String" resultType="String">
+	<![CDATA[
+	select MATERIAL_no from MATERIAL  where material_name = #{hatefood}
+	]]>
+	</select>
+	
+	
+	<!-- 특정 사용자의 불호재료 목록을 반환 -->
+	<select id="getdislikelist" parameterType="int" resultType="String">
+		<![CDATA[
+			select LISTAGG(MATERIAL, ',') WITHIN group(order by MATERIAL) material from dislike
+			where chef_no = #{chef_no}
+		]]>
+	</select>
+	
+	
+	<!-- 	 특정 사용자의 불호재료 이름을  반환 -->
+	<select id="getdislikename" parameterType="List" resultType="String">
+		<![CDATA[
+			select LISTAGG(material_name, ',') WITHIN group(order by material_name) list from MATERIAL where MATERIAL_NO in
+		]]>
+		<foreach collection="list" item="dislist" open="(" close=")"
+			separator="," index="index">
+			#{dislist}
+		</foreach>
+		
+	</select>
+	<!-- 	 특정 사용자의 불호재료 번호 반환 -->
+	<select id="getdislikeno" parameterType="List" resultType="String">
+		<![CDATA[
+			select LISTAGG(material_no, ',') WITHIN group(order by material_no) list from MATERIAL where MATERIAL_name in
+		]]>
+		<foreach collection="list" item="dislistname" open="(" close=")"
+			separator="," index="index">
+			#{dislistname}
+		</foreach>
+		
+	</select>
+</mapper>
