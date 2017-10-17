@@ -8,14 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.service.ReadformService;
+import com.project.service.UserpageService;
 import com.project.vo.DatVo;
 import com.project.vo.ReadformVo;
+import com.project.vo.ScrapVo;
 import com.project.vo.SocialUserVo;
 import com.project.vo.UserpageVo;
 
@@ -25,6 +28,9 @@ public class ReadformController {
 	
 	@Autowired
 	private ReadformService readformService;
+	
+	@Autowired
+	private UserpageService userpageService;
 	
 	//readform할시 실행
 	@RequestMapping(value="/readform")
@@ -57,13 +63,17 @@ public class ReadformController {
 		UserpageVo chef = readformService.getUser(chef_no);
 		
 		model.addAttribute("chef", chef);
-				
-		//카테고리 리스트
-		List<UserpageVo> recipebookList = readformService.getRecipebookList(chef_no);
-		model.addAttribute("recipebookList", recipebookList);
-		
 		}
-				
+		
+		//카테고리 리스트
+		List<UserpageVo> recipebookList = readformService.getRecipebookList(readformVo2.getChef_no());
+		
+		/*List<UserpageVo> followedList = userpageService.getFollowedList(chef_no);*/
+		/*model.addAttribute("followedList", followedList);*/
+		
+		model.addAttribute("recipebookList", recipebookList);
+		System.out.println(recipebookList.toString());
+		
 		model.addAttribute("list",list);		
 		model2.addAttribute("readformVo2",readformVo2);
 		model2.addAttribute("list3",list3);
@@ -102,7 +112,7 @@ public class ReadformController {
     		datVo.setRecipe_no(recipe_no);
         	
     		List<DatVo> list=readformService.getdatlist(datVo);
-    		System.out.println(list.toString());
+    		
     		return list;
     		
     	}
@@ -142,6 +152,16 @@ public class ReadformController {
 		
 		
 		return datVo;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/scrap", method = RequestMethod.POST)
+	public int scrap(@RequestBody ScrapVo vo) {
+		
+		System.out.println(vo.toString());
+		
+		return readformService.addScrap(vo);
+		
 	}
 	
 	/*대표 사진을 다운로드 하는 방법

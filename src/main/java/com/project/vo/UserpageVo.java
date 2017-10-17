@@ -13,6 +13,7 @@ public class UserpageVo {
 	private String introduction;
 	private String profile;
 	private int like_count;
+	private String food_img;
 	private int subscription_count;
 	private int recipebook_count;
 	private int following_count;
@@ -20,6 +21,7 @@ public class UserpageVo {
 	private int following_no;
 	private int followed_no;
 	private String reg_date;
+	private int subCheck;
 	public UserpageVo() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -46,6 +48,19 @@ public class UserpageVo {
 		this.following_no = following_no;
 		this.followed_no = followed_no;
 		this.reg_date = reg_date;
+	}
+	
+	public String getFood_img() {
+		return food_img;
+	}
+	public void setFood_img(String food_img) {
+		this.food_img = food_img;
+	}
+	public int getSubCheck() {
+		return subCheck;
+	}
+	public void setSubCheck(int subCheck) {
+		this.subCheck = subCheck;
 	}
 	public int getChef_no() {
 		return chef_no;

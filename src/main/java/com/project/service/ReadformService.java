@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.project.repository.ReadformDao;
 import com.project.vo.DatVo;
 import com.project.vo.ReadformVo;
+import com.project.vo.ScrapVo;
 import com.project.vo.UserpageVo;
 
 @Service
@@ -62,6 +64,8 @@ public class ReadformService {
 		return readformDao.delete(datVo);
 	}
 	
+	public int addScrap(ScrapVo vo) {
 	
-	
+	return readformDao.addScrap(vo);
+	}
 }

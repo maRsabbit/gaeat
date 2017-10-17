@@ -47,7 +47,6 @@ public class UserpageController {
 		
 		//카테고리 리스트
 		List<UserpageVo> recipebookList = userpageService.getRecipebookList(chef_no);
-		model.addAttribute("recipebookList", recipebookList);
 		
 		System.out.println("recipebook");
 		
@@ -55,20 +54,22 @@ public class UserpageController {
 		List<UserpageVo> recipeList = userpageService.getRecipeList(chef_no);
 		model.addAttribute("recipeList", recipeList);
 		
-		System.out.println("어디지");
-		
+		//followed리스트
 		List<UserpageVo> followedList = userpageService.getFollowedList(chef_no);
 		model.addAttribute("followedList", followedList);
 		
 		System.out.println(followedList.toString());
 		
+		//화면 보이고 안보이고 구분하기위한 세션 불러오기
 		SocialUserVo a = (SocialUserVo)session.getAttribute("authUser");
 		
 		System.out.println("어디서 나는 문젤까");
-		
+	
 		int no = a.getChef_no();
 		
 		System.out.println(no);
+		
+		//follow여부를 위해 followcheck값 계산
 		int followcheck = 3;
 		
 		for(int i = 0; i < followedList.size(); i++) {
@@ -83,6 +84,31 @@ public class UserpageController {
 		
 		model.addAttribute("followcheck", followcheck);
 		
+		//구독 정보를 가져오기 위해 session이 구독중인 recipebooklist 가져와야 함
+		List<UserpageVo> authUserSubInfoList = userpageService.getSubNo(no);
+		
+		/*for(int i = 0; i < recipebookList.size(); i++) {
+			
+			UserpageVo recipebook = recipebookList.get(i);
+			recipebookList
+			for(int j = 0; j < authUserSubInfoList.size(); j++) {
+				
+				UserpageVo authrecipebook = authUserSubInfoList.get(j);
+				
+				if(authrecipebook.getRecipebook_no() == recipebook.getRecipebook_no()) {
+					recipebook.setSubCheck(1);
+					break;
+					
+				}
+			}
+		}*/
+		
+		model.addAttribute("recipebookList", recipebookList);
+		
+		model.addAttribute("authUserSubInfoList", authUserSubInfoList);
+		
+		
+		System.out.println(authUserSubInfoList);
 		return "/user/userpage";
 	}
 	

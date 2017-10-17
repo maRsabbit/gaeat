@@ -20,7 +20,6 @@
 	    from content
 	    where recipe_no=#{recipe_no}
 	    order by oreder_no asc
-	    
     ]]>
 
 	</select>
@@ -36,17 +35,17 @@
 
      </select>
      
-    <select id="getread" parameterType="com.project.vo.ReadformVo" resultType="com.project.vo.ReadformVo">
+    <select id="readformVo2" parameterType="com.project.vo.ReadformVo" resultType="com.project.vo.ReadformVo">
     
     <![CDATA[
-    select recipe_title,introduction,cooking_level,cooking_time,recipe_no,amount,food_img
+    select recipe_title,introduction,cooking_level,cooking_time,recipe_no,amount,food_img,chef_no
     from recipe 
     where recipe_no=#{recipe_no}
     ]]>
 
      </select>
      
-     <select id="getmaterial" parameterType="com.project.vo.ReadformVo" resultType="com.project.vo.ReadformVo">
+     <select id="list3" parameterType="com.project.vo.ReadformVo" resultType="com.project.vo.ReadformVo">
 	    <![CDATA[
 	   select ma.material_name,mh.amount
 	    from material_history mh,material ma
@@ -69,7 +68,7 @@
 	
 	<select id="getRecipebookList" resultType="com.project.vo.UserpageVo">
 		<![CDATA[
-			SELECT r.recipebook_no, r.recipebook_name, c.chef_no, 
+			SELECT r.recipebook_no, r.recipebook_name, c.chef_no,c.profile, 
 			     (select count(*) from SUBSCRIPTION_HISTORY where r.recipebook_no= s.recipebook_no) as subscription_count
 			FROM chef c
 			JOIN subscription_history s
@@ -80,18 +79,8 @@
 			order by s.reg_date desc 
 		]]>
 	</select>
-	
-	
-	
-     
-     
      
    <!-- readform시 작동하는 xml 끝-->  
-     
-     
-     
-     
-     
 	
      <insert id="insertNo" parameterType="com.project.vo.DatVo">
      
@@ -129,11 +118,17 @@
      
      </delete>
      
-     
-     
-     
-     
-    
+     <insert id = "addScrap" parameterType = "com.project.vo.ScrapVo">
+ 	 <![CDATA[
+ 	 	insert into scrap_recipe
+ 	 	values(
+ 	 	sr_seq_no.nextval,
+ 	 	#{userNo},
+ 	 	#{recipe_no},
+ 	 	sysdate
+ 	 	)
+ 	 ]]>
+     </insert>
      
     
 </mapper>

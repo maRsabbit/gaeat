@@ -32,9 +32,9 @@
 	</select>
 	
 	
-	<insert id="RecipeBookinsert" >
+	<insert id="RecipeBookinsert" parameterType = "com.project.vo.SocialUserVo" >
 		<![CDATA[
-		 insert into recipebook values(recipebook_seq.nextval,'나의 첫번째 레시피북')
+		 insert into recipebook values(recipebook_seq.nextval,'나의 첫번째 레시피북',#{chef_no})
 		 ]]>
 	</insert>
 	

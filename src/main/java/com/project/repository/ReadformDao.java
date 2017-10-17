@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.project.vo.DatVo;
 import com.project.vo.ReadformVo;
+import com.project.vo.ScrapVo;
 import com.project.vo.UserpageVo;
 
 @Repository
@@ -34,13 +35,13 @@ public class ReadformDao {
 	
     public ReadformVo getread(ReadformVo readformVo2) {
 		
-		return sqlSession.selectOne("readform.getread",readformVo2);
+		return sqlSession.selectOne("readform.readformVo2",readformVo2);
 	}
 	
     public List<ReadformVo> getmaterial(ReadformVo readformVo3) {
 		
 		
-		return sqlSession.selectList("readform.getmaterial",readformVo3);
+		return sqlSession.selectList("readform.list3",readformVo3);
 	}
     
     //왼쪽 항목
@@ -73,6 +74,11 @@ public class ReadformDao {
 		
 		return sqlSession.delete("readform.delete",datVo);
 		
+	}
+	
+	public int addScrap(ScrapVo vo) {
+		
+		return sqlSession.insert("readform.addScrap", vo);
 	}
 
 	

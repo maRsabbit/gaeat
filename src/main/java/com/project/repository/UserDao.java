@@ -36,7 +36,7 @@ public class UserDao {
 				int a = sqlSession.insert("Sosialinsert",vo);
 					return a;
 				}
-			public int RecipeBookinsert(){
+			public int RecipeBookinsert(SocialUserVo vo){
 				int a = sqlSession.insert("RecipeBookinsert");
 					return a;
 				}

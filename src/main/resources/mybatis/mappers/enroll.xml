@@ -9,13 +9,11 @@
 	
 	<select id = "getRecipebookList" parameterType = "int" resultMap = "recipeBookListResult">
       <![CDATA[
-         SELECT distinct rb.recipebook_no, rb.recipebook_name
-         FROM chef c
-         JOIN recipe r
-         ON c.chef_no = r.chef_no
-         JOIN recipebook rb
-         ON rb.recipebook_no = r.recipebook_no
-         WHERE c.chef_no = #{chef_no}
+      
+      SELECT distinct rb.recipebook_no, rb.recipebook_name
+         FROM chef c,recipebook rb
+         where c.chef_no=rb.chef_no
+         and c.chef_no = #{chef_no}
       ]]>
    </select>
 	
@@ -156,10 +154,9 @@
 	<update id="updateOrderPhoto" parameterType="com.project.vo.RecipePhotoVo">
 	<![CDATA[	
 	
-		MERGE into content
-		using dual on (recipe_no = #{recipeNo} and oreder_no = #{orderNo})
-		when matched then
-		update set img_content = #{path}
+		update content 
+		set img_content = #{path}
+		where recipe_no = #{recipeNo} and oreder_no = #{orderNo}
 		
 	]]>
 	</update>

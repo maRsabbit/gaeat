@@ -19,16 +19,29 @@
         </div>
         <div class="modal-footer">
           <a href="#" data-dismiss="modal" class="btn">취소</a>
-          <a href="${pageContext.request.contextPath }/userpage/subscriptionPage/${blist.recipebook_no}" class="btn btn-primary">확인</a>
+          <a ${blist.recipebook_no}" class="btn btn-primary subCheck" name = "subscribe_${blist.recipebook_no}">확인</a>
         </div>
       </div>
     </div>
 </div>
 
 <script type="text/javascript">
+
+
 $('#openBtn').click(function(){
-	$('#myModal').modal({show:true})
+	$('#myModal').modal({show:true});
+	var subNo = $(this).val();
+	console.log(subNo);
+	
 });
+
+$(document).on("click",".subCheck",function(){
+	
+	var subNo = $(this).val();
+	
+	console.log(subNo);
+});
+
 </script>
 
 

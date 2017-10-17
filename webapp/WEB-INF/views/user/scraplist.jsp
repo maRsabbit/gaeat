@@ -30,7 +30,7 @@
 					<div class="panel-body">
 						<div class="media">
 							<div align="center">
-								<img class="thumbnail img-responsive " src="${pageContext.request.contextPath}/assets/img/KTH.png" width="300px" height="300px">
+									<a href = "${pageContext.request.contextPath }/userpage/main?chef_no=${chef.chef_no}" width="300px" height="300px"><img src="${chef.profile}" class="thumbnail img-responsive"></a>
 							</div>
 
 							<!--  왼쪽부분 -->
@@ -112,7 +112,7 @@
 												<div class="col-md-4">
 													<div class="single-blog-item">
 														<div class="blog-thumnail">
-															<a href="${pageContext.request.contextPath}/user/readform"><img src="${pageContext.request.contextPath}/assets/img/2.png" class ="foodimage" alt="blog-img"></a>
+															<a href="${pageContext.request.contextPath}/user/readform"><img src="" class ="foodimage" alt="blog-img"></a>
 														</div>
 														<div class="blog-content">
 															<h4>

@@ -25,21 +25,16 @@
 	
 	<select id="getRecipebookList" resultType="com.project.vo.UserpageVo">
 		<![CDATA[
-			SELECT distinct rb.recipebook_no, rb.recipebook_name, c.chef_no,
-            	(select count(*) from SUBSCRIPTION_HISTORY where rb.recipebook_no= recipebook_no) as subscription_count
-			FROM chef c
-			JOIN recipe r
-			ON c.chef_no = r.chef_no
-			JOIN recipebook rb
-			ON rb.recipebook_no = r.recipebook_no
-			WHERE c.chef_no = #{no}
-			order by rb.recipebook_no asc
+			SELECT recipebook_no, recipebook_name, chef_no
+			FROM recipebook
+			WHERE chef_no = #{no}
+			order by recipebook_no asc
 		]]>
 	</select>
 	
 	<select id="getRecipeList" resultType="com.project.vo.UserpageVo">
 		<![CDATA[
-			select r.recipe_no, r.introduction, r.recipe_title, r.chef_no, c.nickname, r.reg_date, r.recipebook_no,
+			select r.recipe_no, r.introduction, r.recipe_title, r.chef_no, c.nickname, r.reg_date, r.recipebook_no, food_img,
               	   (select count(*) from LIKE_HISTORY where r.recipe_no=LIKE_HISTORY.recipe_no) as like_count
 	         from recipe r, chef c
 	         where c.chef_no = #{no}
@@ -145,4 +140,11 @@
 			sysdate)
 		]]>
 	</insert>
+	
+	<select id = "selectSubHistory" parameterType = "int" resultType = "com.project.vo.UserpageVo">
+		<![CDATA[
+		select recipebook_no, chef_no from subscription_history
+		where chef_no = #{no}
+		]]>
+	</select>
 </mapper>

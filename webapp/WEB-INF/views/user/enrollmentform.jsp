@@ -1005,12 +1005,17 @@ $(document).ready(function(){
 	                 type: "POST",
 	                 success: function(result){
 	                   console.log("orderphotoSave성공");
-	                   location.href = "${pageContext.request.contextPath}/read/readform?recipe_no="+recipeNo;
 	                 }
 	         });
 		}
+			
+		 finalEnroll(recipeNo);
+		
 	};
 	
+	function finalEnroll(recipeNo){
+		location.href = "${pageContext.request.contextPath}/read/readform?recipe_no="+recipeNo;
+	}
 	
 	/////////////////////////////////////////////////////////
 	

@@ -142,5 +142,14 @@ public class EnrollController {
 		
 	}
 	
+	@RequestMapping(value = "lastenroll")
+	public String lastenroll(@RequestParam("recipe_no") String recipe_no,
+							 Model model) {
+		
+		model.addAttribute("recipe_no", recipe_no);
+		
+		return "user/readform";
+	}
+	
 	
 }

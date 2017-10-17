@@ -4,6 +4,7 @@ public class SubscriptionVo {
 	
 	private int recipebook_no;
 	private int authUser_no;
+	
 	public int getRecipebook_no() {
 		return recipebook_no;
 	}

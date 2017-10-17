@@ -85,5 +85,9 @@ public class UserpageDao {
 		
 		return 1;
 	}
-
+	
+	public List<UserpageVo> getSubNo(int no){
+		
+		return sqlSession.selectList("selectSubHistory", no);
+	}
 }

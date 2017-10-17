@@ -29,43 +29,147 @@ pageEncoding="UTF-8"%>
 	<div class="mainbody container">
 		<div class="row">
 
-			<div style="padding-top: 30px;"></div>
+				<div style="padding-top: 30px;"></div>
 			<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<div class="media">
 							<div align="center">
-								<img class="thumbnail img-responsive " src="${pageContext.request.contextPath}/assets/img/KTH.png" width="300px" height="300px">
+								<img class="thumbnail img-responsive " src="${chef.profile }" width="300px" height="300px">
 							</div>
 
 							<!--  왼쪽부분 -->
 							<div class="media-body">
 								<a href="${pageContext.request.contextPath }/userpage/main?chef_no=${chef.chef_no }" style="font-size:18px; color:black;"><strong>${chef.nickname }</strong></a>
 								<br>
-								<a href="${pageContext.request.contextPath }/userpage/followinglist?chef_no=${chef.chef_no }" style="font-size:11px; color:green;">팔로잉  ${chef.following_count }</a>
 								<br>
-								<a href="${pageContext.request.contextPath }/userpage/followedlist?chef_no=${chef.chef_no }" style="font-size:11px; color:green;">팔로워  ${chef.followed_count }</a>
-								<br>
-								<br>
-								<br>
-								<a href="#" class="btn btn-xs btn-success"><span class="glyphicon glyphicon-heart-empty"></span> 팔로우 하기</a>
-								<a href="#" class="btn btn-xs btn-success"><span class="glyphicon glyphicon-heart"></span> 팔로우 중</a>
 								
 								
-								
-								<%-- <c:choose>
-				 					<c:when test = "${authUser.authUser_no == chef.chef_no }">
-				 						<td> </td>
+								<a href = "${pageContext.request.contextPath }/userpage/followinglist?chef_no=${chef.chef_no }" style="font-size:13px; color:green;" style = "float:left">팔로우</a>
+								<a class = "followingNo" href="${pageContext.request.contextPath }/userpage/followinglist?chef_no=${chef.chef_no }" style="font-size:13px; color:green;" value = "${chef.following_count }">${chef.following_count }</a>
+								<br>
+								<a href = "${pageContext.request.contextPath }/userpage/followedlist?chef_no=${chef.chef_no }" style="font-size:13px; color:green;" style = "float:left">팔로워</a>
+								<a class = "followerNo" href="${pageContext.request.contextPath }/userpage/followedlist?chef_no=${chef.chef_no }" style="font-size:13px; color:green;" value = "${chef.followed_count }">${chef.followed_count }</a>
+								<br>
+								<br>
+								<br>
+								<input id= "authUserFinder" type = "hidden" name = "${authUser.chef_no }">
+								 <c:choose>
+				 					<c:when test = "${authUser.chef_no == null}">
+				 						<br>
 				 					</c:when>
-				 					<c:otherwise>
-					 					<c:when test = "${authUser.authUser_no != chef.chef_no }">
-											<a href="#" class="btn btn-xs btn-success"><span class="glyphicon glyphicon-heart-empty"></span> 팔로우 하기</a>
-											<c:otherwise>
-												<a href="#" class="btn btn-xs btn-success"><span class="glyphicon glyphicon-heart"></span> 팔로우 중</a>
-											</c:otherwise>
-										</c:when>
-									</c:otherwise>
-								</c:choose> --%>
+				 					<c:when test = "${authUser.chef_no == chef.chef_no}">
+				 						<br>
+				 					</c:when>
+				 					<c:when test = "${authUser.chef_no != chef.chef_no}">
+											
+												<c:if test = "${followcheck == 1}">
+													
+													<a href="#" class="btn btn-xs btn-success followed" name = "${chef.chef_no}"> <span class="glyphicon glyphicon-heart"></span>팔로우 중</a>
+													
+												</c:if>
+												
+												<c:if test = "${followcheck != 1}">
+													
+													<a href="#" class="btn btn-xs btn-success following" name = "${chef.chef_no}"><span class="glyphicon glyphicon-heart-empty following"></span> 팔로우하기</a>
+												
+												</c:if>
+											
+									</c:when>
+									
+								</c:choose>
+								
+								<script>
+									$(document).on("click",".followed",function(){
+										
+										str = "<a href='#' class='btn btn-xs btn-success following'><span class='glyphicon glyphicon-heart-empty following'></span> 팔로우하기</a>";
+										
+										$(this).replaceWith(str);
+										
+									})
+									
+									$(document).on("click",".following",function(){
+										
+										var chef_no = $(this).attr("name");
+										
+										str = "<a href='#' class='btn btn-xs btn-success followed'> <span class='glyphicon glyphicon-heart'></span> 팔로우 중</a>";
+										
+										$(this).replaceWith(str);
+										
+										var user_no = $("#authUserFinder").attr("name"); 
+										
+										console.log(user_no);
+										
+										var followVo = {
+												user_no:user_no,
+												chef_no:chef_no
+										}
+										
+										$.ajax({
+											url: "${pageContext.request.contextPath}/userpage/followAdd",
+											type : "post",
+											contentType : "application/json",
+											data: JSON.stringify(followVo),
+											dataType : "json",
+											success : function(no) {
+											
+												console.log("follow 추가 보내기 성공");
+												
+												var followingNo = $(".followerNo").val();
+												
+												console.log(followingNo);
+												followingNo = followingNo + 1;
+												
+												str = "<a class = 'followerNo' href='${pageContext.request.contextPath }/userpage/followedlist?chef_no=${chef.chef_no }' style='font-size:13px; color:green;'>"+ followingNo +"</a>"
+												
+												$(".followerNo").replaceWith(str);
+											
+											}, 
+											error : function(XHR, status, error) {
+												console.error(status + " : " + error);
+											}
+										});
+										
+									})
+									
+									$(document).on("click",".subscription",function(){
+										
+										var subNo = $(this).attr("name");
+										console.log(subNo);
+										
+										var authUserNo = $("#authUserFinder").attr("name");
+										
+										var subVo = {
+												
+												subNo:subNo,
+												authUserNo:authUserNo
+										}
+											
+										
+										$(".subscription").replaceWith(str);
+										
+										$.ajax({
+											url: "${pageContext.request.contextPath}/userpage/subscription",
+											type : "post",
+											contentType : "application/json",
+											data: JSON.stringify(subVo),
+											dataType : "json",
+											success : function(no) {
+											
+												console.log("sub 추가 보내기 성공");
+												
+												var str = "<a class='btn btn-xs btn-default subscribRemove' name = '"+subNo+"'>구독중</a>"
+												
+												$(".followerNo").replaceWith(str);
+											
+											}, 
+											error : function(XHR, status, error) {
+												console.error(status + " : " + error);
+											}
+										});
+										
+									})
+								</script>
 								
 								
 								<br>
@@ -76,7 +180,14 @@ pageEncoding="UTF-8"%>
 								<hr>
 								<h5>
 									<strong>카테고리</strong>
-									<a href="#" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-wrench" data-toggle="modal" data-target="#companyPositionModal" data-backdrop="false"></span>  </a>
+									<c:choose>
+										<c:when test = "${authUser.chef_no == chef.chef_no}">
+											<a href="#" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-wrench" data-toggle="modal" data-target="#companyPositionModal" data-backdrop="false"></span>  </a>
+										</c:when>
+										<c:otherwise>
+											<a></a>
+										</c:otherwise>
+									</c:choose>
 								</h5>
 								
 								<c:forEach items="${recipebookList }" var="list">
@@ -91,7 +202,14 @@ pageEncoding="UTF-8"%>
 								<br>
 								<br>
 								<br>
-									<a href="${pageContext.request.contextPath }/enrollform/enrollmentform?chef_no=${chef.chef_no }" style="font-size:11px; color:black;">글쓰기</a>
+								<c:choose>
+										<c:when test = "${authUser.chef_no == chef.chef_no}">
+											<a href="${pageContext.request.contextPath }/enrollform/enrollmentform?chef_no=${chef.chef_no }" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span> 글쓰기</a>
+										</c:when>
+										<c:otherwise>
+											<a></a>
+										</c:otherwise>
+									</c:choose>
 								<br>
 							</div>
 
@@ -335,6 +453,48 @@ pageEncoding="UTF-8"%>
 					<br>
 					<br>
 					<br>
+					<c:choose>
+					<c:when test = "${authUser.chef_no == chef.chef_no}">
+						<a class="btn btn-xs btn-default scrapButton" name = "${readformVo2.recipe_no }" style = "float:right; margin-right:15px;"><span class="glyphicon glyphicon-book"></span>  스크랩하기</a>
+					</c:when>
+					<c:otherwise>
+						<a></a>
+					</c:otherwise>
+					</c:choose>
+					<input id = "authuserNoFinder" type = "hidden" value = "${authUser.chef_no}">
+					<script>
+					$(".scrapButton").on("click",function(){
+						
+						var username = $("#authuserNoFinder").val();
+						var recipe_no = $(this).attr("name");
+						var str = "<a class='btn btn-xs btn-default scrapRemoveButton' style = 'float:right; margin-right:15px;'><span class='glyphicon glyphicon-bookmark'></span> 스크랩한 레시피</a>";
+						
+						$(this).replaceWith(str);
+						
+						var ScrapVo = {
+								userNo:username,
+								recipe_no:recipe_no
+						}
+						
+						console.log(ScrapVo);
+						
+						$.ajax({
+							url: "${pageContext.request.contextPath}/read/scrap",
+							type : "post",
+							contentType : "application/json",
+							data: JSON.stringify(ScrapVo),
+							dataType : "json",
+							success : function() {
+								console.log("성공");							
+							}, 
+							error : function(XHR, status, error) {
+								console.error(status + " : " + error);
+							}
+						});
+						
+						
+					})
+					</script>
 					<!-- <h6 class="line-title">댓글</h6> -->
 					<br>
 					<br>

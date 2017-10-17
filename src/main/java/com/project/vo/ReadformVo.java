@@ -3,6 +3,7 @@ package com.project.vo;
 public class ReadformVo {
 	
 	private int recipe_no;
+	private int chef_no;
 	private String introduction;
 	private String recipe_title;
 	private String cooking_level;
@@ -16,6 +17,13 @@ public class ReadformVo {
 	private String material_name;
 	private String amount;
 	
+	
+	public int getChef_no() {
+		return chef_no;
+	}
+	public void setChef_no(int chef_no) {
+		this.chef_no = chef_no;
+	}
 	public String getFood_img() {
 		return food_img;
 	}

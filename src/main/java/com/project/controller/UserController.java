@@ -120,7 +120,7 @@ public class UserController {
 			authUser.setHatefood(hatefood);
 		}
 		session.setAttribute("authUser", authUser);
-		System.out.println("수정후 세션 안의 값 :"+authUser);
+		System.out.println("수정후 세션 안의 값 1:"+authUser);
 		
 	}else {
 		SocialUserVo authUser = uService.updateUser1(vo);
@@ -130,7 +130,7 @@ public class UserController {
 			authUser.setHatefood(hatefood);
 		}
 		session.setAttribute("authUser", authUser);
-		System.out.println("수정후 세션 안의 값 :"+authUser);
+		System.out.println("수정후 세션 안의 값 :2"+authUser);
 	}
 		
 		return"redirect:userprofile";
@@ -193,15 +193,16 @@ public class UserController {
 	/*로그인 */
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public String login(@ModelAttribute SocialUserVo joinvo, HttpSession session) {
-		System.out.println("login"+joinvo.toString());
+		System.out.println("login 함 "+joinvo.toString());
 		
 		SocialUserVo authUser=uService.loginUser(joinvo);
 		if (authUser!= null) {
-
+			
 			session.setAttribute("authUser",authUser);//세션에 넣어줌 
 			
 			String hatefood= uService.getdislike(authUser.getChef_no());
 			if (hatefood==null) {
+				System.out.println("hatefood == null");
 				return "main/index";
 			}else {
 				//프로필에 들어갈때, authUser에 있는 chef no 로 dislike 가 있나없나 파악한다. 

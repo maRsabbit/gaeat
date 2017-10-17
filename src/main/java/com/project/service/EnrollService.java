@@ -68,7 +68,7 @@ public class EnrollService {
 		String exName = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
 		String saveName =  "mainPhoto_" + recipeNo + exName;
 		String filePath = saveDir + saveName;
-		String saveMainphotoName = "http://localhost:8088/gaeat01/upload/MainPhoto/"+recipeNo+"/"+saveName;
+		String saveMainphotoName = "http://localhost:8088/gaeat/upload/MainPhoto/"+recipeNo+"/"+saveName;
 	
 		System.out.println(saveName);
 		System.out.println(filePath);
@@ -105,7 +105,7 @@ public class EnrollService {
 		String exName = photo.getOriginalFilename().substring(photo.getOriginalFilename().lastIndexOf("."));
 		String saveName =  "orderPhoto_" + recipeNo + "_" + orderNo + exName;
 		String filePath = saveDir + saveName;
-		String saveOrderphotoName = "http://localhost:8088/gaeat01/upload/orderPhoto/"+recipeNo+"/"+orderNo+"/"+saveName;
+		String saveOrderphotoName = "http://localhost:8088/gaeat/upload/orderPhoto/"+recipeNo+"/"+orderNo+"/"+saveName;
 	
 		System.out.println(saveName);
 		System.out.println(filePath);

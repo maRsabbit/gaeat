@@ -259,11 +259,65 @@
 		</div>
 		
 		
+			<!-- 사람 캐러젤 -->
+			<div class="container-fluid" style="padding-bottom: 100px; padding-top:50px; background-image: url(${pageContext.request.contextPath}/assets/img/trending/carousel_back.png);">
+				<div class="row">
+                    <div class="col-md-12" data-wow-delay="0.2s">
+                        <div class="carousel slide" data-ride="carousel" id="quote-carousel">
+                            <!-- Bottom Carousel Indicators -->
+                            <ol class="carousel-indicators">
+                                <li data-target="#quote-carousel" data-slide-to="0" class="active"><img class="img-responsive " src="https://s3.amazonaws.com/uifaces/faces/twitter/brad_frost/128.jpg" alt="">
+                                </li>
+                                <li data-target="#quote-carousel" data-slide-to="1"><img class="img-responsive" src="https://s3.amazonaws.com/uifaces/faces/twitter/rssems/128.jpg" alt="">
+                                </li>
+                                <li data-target="#quote-carousel" data-slide-to="2"><img class="img-responsive" src="https://s3.amazonaws.com/uifaces/faces/twitter/adellecharles/128.jpg" alt="">
+                                </li>
+                            </ol>
+                            <!-- 슬라이드 -->
+                            <div class="carousel-inner text-center">
+                                <!-- 사람 1 -->
+                                <div class="item active">
+                                        <div class="row">
+                                            <div class="col-sm-8 col-sm-offset-2">
+                                                <h2 style="color: white;">제육볶음 하나만으로 좋아요 1위를 기록한 바로~~</h2>
+                                                <br>
+                                                <h5 style="color: #6F7C80;"><strong>-여윤철닉-</strong></h5>
+                                            </div>
+                                        </div>
+                                </div>
+                                <!-- 사람 2 -->
+                                <div class="item">
+                                        <div class="row">
+                                            <div class="col-sm-8 col-sm-offset-2">
+                                                <h2 style="color: white;">소고기 요리의 장인 그는!</h2>
+                                                <br>
+                                                <h5 style="color: #6F7C80;"><strong>-은지닷-</strong></h5>
+                                            </div>
+                                        </div>
+                                </div>
+                                <!-- 사람 3 -->
+                                <div class="item">
+                                        <div class="row">
+                                            <div class="col-sm-8 col-sm-offset-2">
+                                                <h2 style="color: white;">채소만을 사용한 인기 채식 쉐프!</h2>
+                                                <br>
+                                                <h5 style="color: #6F7C80;"><strong>-근섭만세-</strong></h5>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                            <!-- 슬라이드 버튼 -->
+                            <a data-slide="prev" href="#quote-carousel" class="left carousel-control"><i class="fa fa-chevron-left"></i></a>
+                            <a data-slide="next" href="#quote-carousel" class="right carousel-control"><i class="fa fa-chevron-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		
+		
 		<!-- 네가지 긴 사진 -->
-        <div class = "container service" style = "margin-top: 50px; margin-bottom: 200px">
-        	        
+        <div class = "container service" style = "margin-top: 50px; padding-bottom: 100px; padding-top: 100px;">
         	<div class = "row">
-
         		<div class = "col-xs-3">
         			<a>
         				<div class = "trendImage"  align="center">
@@ -358,6 +412,17 @@
 					</div>
 				</div>
 				<!--44-->
+				<div class="row row-divided" style="margin-top: 30px;">
+					<div class="col-xs-6 column-one">
+						<h2 style="text-align: center; padding-top: 60px;"></h2>
+					</div>
+					<div class="vertical-divider"></div>
+					<div class="col-xs-6 column-two">
+						<h5 style="line-height: 30px; padding-left: 30px; padding-top: 40px;">
+							<br><br><br>
+						</h5>
+					</div>
+				</div>
 			</div>
 		</div>
 

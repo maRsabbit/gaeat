@@ -97,7 +97,7 @@ public class EnrollDao {
 	public void saveOrderPhoto(RecipePhotoVo vo) {
 		
 		System.out.println("orderPhotoDao");
-		sqlSession.update("updateOrderPhoto", vo);
+		sqlSession.update("enroll.updateOrderPhoto", vo);
 		
 	}
 	
@@ -106,11 +106,11 @@ public class EnrollDao {
 		String date = sqlSession.selectOne("selectDate", vo.getRecipeNo());
 		vo.setSysdate(date);
 		
-		sqlSession.selectOne("tagInsert", vo.getTag());
-		int tagNo =	sqlSession.selectOne("selectTagNo",vo);
+		sqlSession.selectOne("enroll.tagInsert", vo.getTag());
+		int tagNo =	sqlSession.selectOne("enroll.selectTagNo",vo);
 		vo.setTagNo(tagNo);
 		
-		sqlSession.insert("tagHisInsert", vo);
+		sqlSession.insert("enroll.tagHisInsert", vo);
 		
 	}
 	
@@ -118,7 +118,7 @@ public class EnrollDao {
 		
 		List<String> ingreList = new ArrayList<String>();
 		
-		ingreList = sqlSession.selectList("ingredients");
+		ingreList = sqlSession.selectList("enroll.ingredients");
 		
 		return ingreList;
 	}

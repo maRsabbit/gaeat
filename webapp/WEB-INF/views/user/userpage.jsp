@@ -128,6 +128,44 @@
 										});
 										
 									})
+									
+									$(document).on("click",".subscription",function(){
+										
+										var subNo = $(this).attr("name");
+										console.log(subNo);
+										
+										var authUserNo = $("#authUserFinder").attr("name");
+										
+										var subVo = {
+												
+												subNo:subNo,
+												authUserNo:authUserNo
+										}
+											
+										
+										$(".subscription").replaceWith(str);
+										
+										$.ajax({
+											url: "${pageContext.request.contextPath}/userpage/subscription",
+											type : "post",
+											contentType : "application/json",
+											data: JSON.stringify(subVo),
+											dataType : "json",
+											success : function(no) {
+											
+												console.log("sub 추가 보내기 성공");
+												
+												var str = "<a class='btn btn-xs btn-default subscribRemove' name = '"+subNo+"'>구독중</a>"
+												
+												$(".followerNo").replaceWith(str);
+											
+											}, 
+											error : function(XHR, status, error) {
+												console.error(status + " : " + error);
+											}
+										});
+										
+									})
 								</script>
 								
 								
@@ -139,7 +177,14 @@
 								<hr>
 								<h5>
 									<strong>카테고리</strong>
-									<a href="#" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-wrench" data-toggle="modal" data-target="#companyPositionModal" data-backdrop="false"></span>  </a>
+									<c:choose>
+										<c:when test = "${authUser.chef_no == chef.chef_no}">
+											<a href="#" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-wrench" data-toggle="modal" data-target="#companyPositionModal" data-backdrop="false"></span>  </a>
+										</c:when>
+										<c:otherwise>
+											<a></a>
+										</c:otherwise>
+									</c:choose>
 								</h5>
 								
 								<c:forEach items="${recipebookList }" var="list">
@@ -154,7 +199,14 @@
 								<br>
 								<br>
 								<br>
-									<a href="${pageContext.request.contextPath }/enrollform/enrollmentform?chef_no=${chef.chef_no }" style="font-size:11px; color:black;">글쓰기</a>
+								<c:choose>
+										<c:when test = "${authUser.chef_no == chef.chef_no}">
+											<a href="${pageContext.request.contextPath }/enrollform/enrollmentform?chef_no=${chef.chef_no }" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span> 글쓰기</a>
+										</c:when>
+										<c:otherwise>
+											<a></a>
+										</c:otherwise>
+									</c:choose>
 								<br>
 							</div>
 
@@ -172,8 +224,25 @@
 								<a href="#" style="color:black;"><strong>${blist.recipebook_name }</strong></a> 
 								&nbsp;
 								
-						<a data-toggle="modal" href="#myModal" class="btn btn-xs btn-default" data-backdrop="false">구독하기</a>
-						
+							<c:choose>
+								<c:when test= "${authUser.chef_no == null }">
+								<a></a>
+								</c:when>
+								<c:when test = "${authUser.chef_no == blist.chef_no}">
+								<a></a>
+								</c:when>
+								<c:when test = "${authUser.chef_no != blist.chef_no}">
+									<c:forEach items="${authUserSubInfoList }" var="authBlist">
+										<c:if test = "${authBlist.recipebook_no ==  blist.recipebook_no}">
+											<a class="btn btn-xs btn-default subscribRemove" name = "${blist.recipebook_no}">구독중</a>
+										</c:if>
+										<c:if test = "${authBlist.recipebook_no != blist.recipebook_no}">
+											<a class="btn btn-xs btn-default subscription" name = "${blist.recipebook_no}">구독하기</a>
+										</c:if>
+									</c:forEach>
+								</c:when>
+							</c:choose>
+							
 								<div style="text-align:right">
 									<h style="font-size:12px; color:green;">${blist.subscription_count }명이 구독 중 입니다.</h>
 								</div>
@@ -187,16 +256,16 @@
 											<c:if test ="${blist.recipebook_no  == list.recipebook_no }">
 												<div class="col-md-4">
 													<div class="single-blog-item">
-														<div class="blog-thumnail">
-															<a href="${pageContext.request.contextPath}/read/readform?recipe_no=${list.recipe_no }"><img src="${pageContext.request.contextPath}/assets/img/2.png" class ="foodimage" alt="blog-img"></a>
+														<div class="blog-thumnail" style = "width:100%;">
+															<a href="${pageContext.request.contextPath}/read/readform?recipe_no=${list.recipe_no }"><img src="${list.food_img }" class ="foodimage" alt="blog-img" height = "100px";width = "100%"></a>
 														</div>
 														<div class="blog-content">
 															<h4>
-																<a href="${pageContext.request.contextPath}/user/readform" style="font-size:16px" >${list.recipe_title }</a>
-																<h style="font-size:4px; color:green;">by </h>
+																<a href="${pageContext.request.contextPath}/read/readform?recipe_no=${list.recipe_no }" style="font-size:16px" >${list.recipe_title }</a>
+																	<h style="font-size:4px; color:green;">by </h>
 																<a href="${pageContext.request.contextPath }/userpage/main?chef_no=${chef.chef_no }" style="font-size:10px; color:black;">${list.nickname }</a>
 															</h4>
-															<p>${list.introduction }</p>
+															<p style = "height:20px; overflow:hidden">${list.introduction }</p>
 														</div>
 														<span class="blog-date">좋아요 ${list.like_count }</span>
 													</div>

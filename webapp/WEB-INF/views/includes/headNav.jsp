@@ -310,23 +310,41 @@
 .checkbox-success input[type="checkbox"]:checked+label::after {
 	color: #fff;
 }
+
+@font-face{
+	
+	font-family:'squareRoundEB';
+	src:url(${pageContext.request.contextPath}/assets/fonts/NanumSquareRoundEB.ttf) format('truetype') ;
+	
+	
+}
+.row a,.sidhatefood ,.chef{font-family:'squareRoundEB';font-size:20px}
+
+
+#loginBtn ,#modalBtn
+	{background-color:#aeb991 !important;background-image:none	}
+	
+.button-add
+	{background-color:#8a9887 ; border:0px ;width:150px;height:50px;font-size:30px;color:#faf9f7}
 </style>
 
 <!-- Navigation -->
 <!-- Navigation -->
 <div class="container-fluid">
 	<nav class="navbar navbar-fixed-top" role="navigation"
-		id="navbar-scroll" style="margin-bottom: 0px; height: 110px;">
-		<div class="container-fluid" style="width: 1300px; heigt: auto">
+		id="navbar-scroll" style="margin-bottom:0px;height: 110px; background-image: url(${pageContext.request.contextPath}/assets/img/main_back.png);">
+		<div class="container-fluid" style="width: 1300px; heigt: auto;margin-right: auto; margin-left: auto;">
 
 			<!-- toggle -->
-			<div class="col-xs-1" style="margin-left: 0px">
-				<a id="main" style="z-index: 1"> <span
-					style="font-size: 40px; cursor: pointer; color: #528540;"
-					onclick="openNav()">&#9776;</span>
+			<div class="col-xs-1" >
+				<a id="main" style="z-index: 1">
+				 <img src ="${pageContext.request.contextPath}/assets/img/MENU.png" style="margin-top:30px;cursor: pointer;" onclick="openNav()">
 				</a>
 
 				<div id="mySidenav" class="sidenav">
+				<div>
+				
+				</div>
 					<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 					<!-- 로그인 버튼 -->
 					<div class="row">
@@ -340,18 +358,20 @@
 									</div>
 
 									<c:choose>
-										<c:when test="${authUser.nickname=='null'}">
-											<a id="name"
-												href="${pageContext.request.contextPath }/userpage/main?chef_no=${authUser.chef_no}">${authUser.nickname}님의
-												프로필입니다. </a>
+										<c:when test="${authUser.nickname==null}">
+										<a class ="chef"> chef :  </a>
+										<p> ${authUser.nickname}</p>
+											<a id="name" 
+												href="${pageContext.request.contextPath }/userpage/main?chef_no=${authUser.chef_no}"> chef home  </a>
 										</c:when>
 										<c:otherwise>
+										<a class ="chef"> chef : ${authUser.name} </a>
 											<a id="name"
-												href="${pageContext.request.contextPath }/userpage/main?chef_no=${authUser.chef_no}">${authUser.nickname}님의
-												프로필입니다.</a>
+												href="${pageContext.request.contextPath }/userpage/main?chef_no=${authUser.chef_no}">  chef home   </a>
 										</c:otherwise>
 									</c:choose>
-
+										<a id="modify" 
+										href="${pageContext.request.contextPath}/user/userprofile">my page </a>
 									<c:choose>
 										<c:when test="${authUser.socialcheck=='s'}">
 											<a id="logoutbtn"
@@ -362,19 +382,23 @@
 												href="${pageContext.request.contextPath}/main/logoutUser">로그아웃</a>
 										</c:otherwise>
 									</c:choose>
-									<a id="mypage"
-										href="${pageContext.request.contextPath}/user/userprofile">내정보
-										수정 </a>
+									
 								</c:when>
-
-
-								<c:otherwise>
-									<a id="kakao-login-btn"> </a>
-									<input class="btn btn-lg btn-facebook btn-block" id="loginBtn"
-										type="submit" value="facebook으로 로그인 하기">
+					<c:otherwise>
+									
+									<a id="custom-login-btn" href="javascript:loginWithKakao()">
+									<img src="${pageContext.request.contextPath}/assets/img/kakologin.png"/>
+									</a>
+									
+									<a class="btn-facebook "  id="loginBtn" >
+									<img src="${pageContext.request.contextPath}/assets/img/facebooklogin.png"/>
+									</a>
+									
 									<a href="#login-modal" id="modalBtn"
-										class="btn btn-primary btn-sm" role="button"
-										data-toggle="modal" data-backdrop="false">로그인/회원가입</a>
+										 role="button"
+										data-toggle="modal" data-backdrop="false" >
+										<img src="${pageContext.request.contextPath}/assets/img/gaeatlogin.png"/>
+										</a>
 								</c:otherwise>
 
 							</c:choose>
@@ -504,16 +528,21 @@
 						</div>
 					</div>
 					<!-- 최초 로그인 폼 끝 -->
-					<hr style="border: solid 1px #528540;">
+					<hr style="border: solid 1px #faf9f7;">
 					<!-- 구분 라인 -->
-					<div class="sidhatefood">
-						<input type="button" style="background: #111; border: 0px"
-							value="제외할 음식 목록" class="button-add " onclick="lookforhatefood()" />
-
-						<div id="hatefoodlist"></div>
-
-						<a href="#">board2</a> <a href="#">board3</a>
-					</div>
+					<c:choose>
+							<c:when test="${authUser!=null}">
+								<div class="sidhatefood">
+									<img src="${pageContext.request.contextPath}/assets/img/dislike.PNG" onclick="ab()" />
+								<div id="hatefoodlist">
+								</div>
+								</div>
+							</c:when>
+							<c:otherwise>
+								<div></div>
+							</c:otherwise>
+					</c:choose>
+					
 				</div>
 			</div>
 			<!-- 토글 끝  -->
@@ -531,15 +560,11 @@
 				}
 			</script>
 			<script type="text/javascript">
-				function lookforhatefood() {
+				function ab(){
 					$("#hatefoodlist").empty();
-					var chef_no = $
-					{
-						authUser.chef_no
-					}
-					;
-					$
-							.ajax({
+					var chef_no = ${authUser.chef_no};
+					console.log(chef_no);
+					$.ajax({
 								url : "${pageContext.request.contextPath }/user/seldislist",
 								type : "POST",
 								/* contentType : "application/json", */
@@ -549,7 +574,7 @@
 								dataType : "json",
 								success : function(authUser) {
 									renderhatefood(authUser);
-
+										console.log(authUser);
 								},
 								error : function(XHR, status, error) {
 									console.error(status + " : " + error);
@@ -563,10 +588,10 @@
 						for (var i = 0; i < dislist.length; i++) {
 							var str = "";
 							str += "<div id ='dislist"+i+"'  value='"+dislist[i]+"' >"
-							str += "<input type='text' name='hatefood'  value='"+dislist[i]+"' style='width:100px;margin-bottom:5px;background-color:transparent;bord:0px;margin-left:31px' readonly> ";
+							str += "<input type='text' name='hatefood'  value='"+dislist[i]+"' style='width:100px;margin-bottom:5px;background-color:transparent;border:0px;margin-left:31px;margin-top:10px' readonly> ";
 							str += " <input type='button'  id ='dislist"
 									+ i
-									+ "' value='삭제' onclick='dislist_remove(this)'> "
+									+ "' value='삭제' style='border-radius: 5px;background-color: transparent;border: 2px solid #6082af ;margin-left:20px' onclick='dislist_remove(this)'> "
 							$("#hatefoodlist").append(str);
 						}
 					} else {
@@ -640,7 +665,7 @@
 			</div>
 
 			<script type="text/javascript">
-			//자동 갱신한다. 시발
+			//자동 갱신한다.
 			reloadtag();
 			function reloadtag() {
 				console.log("recommendTag");
@@ -712,6 +737,8 @@
 			</script>
 			<!-- 검색 버튼 클릭 -->
 			<script type="text/javascript">
+
+			
 				$("#search_btn").on("click", function(){
 					console.log("넌 이미 눌렀다.");
 					var inputkey = $("#search_word").val();
@@ -940,8 +967,8 @@
 			<div class="col-xs-1">
 
 				<a href="${pageContext.request.contextPath}/main/index"><img
-					src="${pageContext.request.contextPath}/assets/img/mainLogo.png"
-					style="margin-bottom: 19px; margin-top: 10px; margin-left: 40px;"
+					src="${pageContext.request.contextPath}/assets/img/nlogo.png"
+					style="margin-bottom: 19px; margin-top: 15px; margin-left: 0x;"
 					alt="logo.png"></a>
 
 			</div>
@@ -1020,8 +1047,7 @@
 <script type="text/javascript">
 	//3데이타를 받아오는 메소드 
 	function getUserData() {
-		FB
-				.api(
+		FB.api(
 						'/me',
 						{
 							fields : 'name,email,id,picture'
@@ -1032,8 +1058,7 @@
 								profile : response.picture.data.url,
 								id : response.id
 							}
-							$
-									.ajax({
+							$.ajax({
 										url : "${pageContext.request.contextPath }/user/facebook/add",
 										type : "POST",
 										contentType : "application/json",
@@ -1148,40 +1173,27 @@
 
 	Kakao.init('e7164519a5043bff4a23dce18aedf1cf');
 	// 카카오 로그인 버튼을 생성합니다.
-	Kakao.Auth.createLoginButton({
-		container : '#kakao-login-btn',
+		   function loginWithKakao() {
+		Kakao.Auth.login({
 		success : function(authObj) {
 			// 로그인 성공시 api호출합니다. 
 			access_token = authObj.access_token;
-			console.log(authObj);
-
 			Kakao.API.request({
 				url : '/v1/user/me',
 				success : function(resultObj) {
-					console.log(access_token);
 					getUserDataKakao(resultObj);
-					Kakao.Auth.logout(function() {
-						console.log("aa");
-					});
-
 				},
 				fail : function(error) {
-					Kakao.Auth.logout(function() {
-						console.log("aa");
-
-					});
 					alert(JSON.stringify(error));
 				}
 			});
-
 		},
 		fail : function(err) {
-			Kakao.Auth.logout(function() {
-				console.log("aa");
-			});
 			alert(JSON.stringify(err));
 		}
-	});
+		});
+		
+		}
 
 	function getUserDataKakao(res) {
 		var kakaovo = {
@@ -1189,8 +1201,7 @@
 			profile : res.properties.profile_image,
 			id : res.kaccount_email
 		}
-		$
-				.ajax({
+		$.ajax({
 					url : "${pageContext.request.contextPath }/user/kakao/add",
 					type : "POST",
 					contentType : "application/json",
@@ -1199,15 +1210,16 @@
 					success : function(authUser) {
 						renderkako(authUser);
 						if (authUser.nickname == null) {
+							Kakao.Auth.logout(function() { console.log("logged out."); });
 							location.reload();
 							window.location.href = "${pageContext.request.contextPath}/user/userprofile";
 						} else {
+							Kakao.Auth.logout(function() { console.log("logged out."); });
 							location.reload();
 						}
 					},
 					error : function(XHR, status, error) {
-						Kakao.Auth.logout(function() {
-						});
+					
 
 					}
 
@@ -1227,11 +1239,9 @@
 
 		var ka1 = document.getElementById('logoutbtn');
 		if (ka1) {
-			Kakao.Auth.logout(function() {
-			});
+			Kakao.Auth.logout(function() { console.log("logged out."); });
 			ka1.onclick = function() {
-				Kakao.Auth.logout(function() {
-				});
+				Kakao.Auth.logout(function() { console.log("logged out."); });
 			}
 		}
 	}

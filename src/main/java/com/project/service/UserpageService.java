@@ -54,4 +54,9 @@ public class UserpageService {
 		return userpageDao.addFollow(vo);
 		
 	}
+	
+	public List<UserpageVo> getSubNo(int no){
+		
+		return userpageDao.getSubNo(no);
+	}
 }

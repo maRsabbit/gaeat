@@ -37,7 +37,7 @@ public class UserService {
 		if (authUser==null) {//셀렉트 해온값이 널이면 (가입이 안되어 있으면 )
 			int a =uDao.SocialLogin(vo);
 			System.out.println("처리된 건수 :"+a);//가입하고 가입건수를 보여줌 
-			int b =uDao.RecipeBookinsert();
+			int b =uDao.RecipeBookinsert(vo);
 			System.out.println("처리된 건수 recipebook:"+b);//가입하고 가입건수를 보여줌 
 			return uDao.selectUser(vo); //그리고 셀렉트 한번더해와서 리턴해줌 
 		}else {
@@ -73,7 +73,7 @@ public class UserService {
 		joinvo.setProfile(saveprofilename);
 		
 		uDao.UserLogin(joinvo);
-		uDao.RecipeBookinsert();
+		uDao.RecipeBookinsert(joinvo);
 			return uDao.selectUser1(joinvo);
 	}
 	
