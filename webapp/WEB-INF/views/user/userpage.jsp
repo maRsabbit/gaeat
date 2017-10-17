@@ -79,9 +79,43 @@
 								<script>
 									$(document).on("click",".followed",function(){
 										
-										str = "<a href='#' class='btn btn-xs btn-success following'><span class='glyphicon glyphicon-heart-empty following'></span> 팔로우하기</a>";
+										var chef_no = $(this).attr("name");
+										
+										str = "<a href='#' class='btn btn-xs btn-success following' name = '+"chef_no"+'><span class='glyphicon glyphicon-heart-empty following'></span> 팔로우하기</a>";
 										
 										$(this).replaceWith(str);
+										
+										var user_no = $("#authUserFinder").attr("name"); 
+										
+										var followVo = {
+												chef_no:chef_no,
+												user_no:user_no
+										}
+										
+										$.ajax({
+											url: "${pageContext.request.contextPath}/userpage/followRemove",
+											type : "post",
+											contentType : "application/json",
+											data: JSON.stringify(followVo),
+											dataType : "json",
+											success : function(no) {
+											
+												console.log("follow 추가 보내기 성공");
+												
+												var followingNo = $(".followerNo").val();
+												
+												console.log(followingNo);
+												followingNo = followingNo + 1;
+												
+												str = "<a class = 'followerNo' href='${pageContext.request.contextPath }/userpage/followedlist?chef_no=${chef.chef_no }' style='font-size:13px; color:green;'>"+ followingNo +"</a>"
+												
+												$(".followerNo").replaceWith(str);
+											
+											}, 
+											error : function(XHR, status, error) {
+												console.error(status + " : " + error);
+											}
+										});
 										
 									})
 									
@@ -89,7 +123,7 @@
 										
 										var chef_no = $(this).attr("name");
 										
-										str = "<a href='#' class='btn btn-xs btn-success followed'> <span class='glyphicon glyphicon-heart'></span> 팔로우 중</a>";
+										str = "<a href='#' class='btn btn-xs btn-success followed' name = '+"chef_no"+'> <span class='glyphicon glyphicon-heart'></span> 팔로우 중</a>";
 										
 										$(this).replaceWith(str);
 										

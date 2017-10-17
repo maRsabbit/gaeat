@@ -20,6 +20,7 @@ public class UserpageVo {
 	private int followed_count;
 	private int following_no;
 	private int followed_no;
+	private int follow_no;
 	private String reg_date;
 	private int subCheck;
 	public UserpageVo() {
@@ -50,6 +51,13 @@ public class UserpageVo {
 		this.reg_date = reg_date;
 	}
 	
+	
+	public int getFollow_no() {
+		return follow_no;
+	}
+	public void setFollow_no(int follow_no) {
+		this.follow_no = follow_no;
+	}
 	public String getFood_img() {
 		return food_img;
 	}

@@ -59,4 +59,8 @@ public class UserpageService {
 		
 		return userpageDao.getSubNo(no);
 	}
+	
+	public int removeFollow(FollowVo vo) {
+		return userpageDao.removeFollow(vo);
+	} 
 }

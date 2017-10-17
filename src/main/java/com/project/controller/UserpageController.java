@@ -201,6 +201,13 @@ public class UserpageController {
 		
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "followRemove")
+	public int removeFollow(@RequestBody FollowVo vo) {
+		System.out.println(vo);
+		return userpageService.removeFollow(vo);
+	}
+	
 	/*@ResponseBody
 	@RequestMapping(value = "/subscriptionPage")
 	public int subscription(@RequestBody SubscriptionVo vo) {

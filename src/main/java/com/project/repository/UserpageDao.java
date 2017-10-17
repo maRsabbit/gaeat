@@ -90,4 +90,8 @@ public class UserpageDao {
 		
 		return sqlSession.selectList("selectSubHistory", no);
 	}
+
+	public int removeFollow(FollowVo vo) {
+		return sqlSession.delete("removeFollow", vo);
+	}
 }

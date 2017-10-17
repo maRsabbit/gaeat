@@ -112,12 +112,12 @@
 												<div class="col-md-4">
 													<div class="single-blog-item">
 														<div class="blog-thumnail">
-															<a href="${pageContext.request.contextPath}/user/readform"><img src="" class ="foodimage" alt="blog-img"></a>
+															<a href="${pageContext.request.contextPath}/user/readform"><img src="${list.food_img}"" class ="foodimage" alt="blog-img"></a>
 														</div>
 														<div class="blog-content">
 															<h4>
 																<a href="${pageContext.request.contextPath}/user/readform">${list.recipe_title }</a>
-																<h style="font-size:6px; color:green;">by </h>
+																<h style="font-size:5px; color:green;">by </h>
 																<a href="${pageContext.request.contextPath }/userpage/main?chef_no=${list.chef_no }" style="font-size:12px; color:black;">${list.nickname }</a>
 															</h4>
 															<p>${list.introduction }</p>

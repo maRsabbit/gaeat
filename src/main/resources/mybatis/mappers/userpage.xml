@@ -56,7 +56,7 @@
 	
 	<select id="getFollowingList" resultType="com.project.vo.UserpageVo">
 		<![CDATA[
-			select c.chef_no, c.email, c.password, c.name, c.nickname, c.self_intro, f.reg_date, profile,
+			select c.chef_no, c.email, c.password, c.name, c.nickname, c.self_intro, f.reg_date, profile, f.follow_no,
 				   (select count(*) from follow_HISTORY where chef_no=follow_HISTORY.FOLLOWed_ID) as followed_count
 			from chef c, follow_history f
 			where f.following_id = #{no}
@@ -67,7 +67,7 @@
 	
 	<select id="getScrapList" resultType="com.project.vo.UserpageVo">
 		<![CDATA[
-			SELECT s.chef_no, c.chef_no, c.nickname, c.self_intro, r.recipe_title, r.introduction, s.reg_date,
+			SELECT s.chef_no, c.chef_no, c.nickname, c.self_intro, r.recipe_title, r.introduction, s.reg_date, r.food_img,
 			    (select count(*) from LIKE_HISTORY where s.recipe_no=LIKE_HISTORY.recipe_no) as like_count
 			FROM scrap_recipe s
 			JOIN recipe r
