@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.reflection.SystemMetaObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,7 +57,7 @@ public class UserService {
 			String exName = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));//확장자
 			String saveName = joinvo.getId()+"_"+"profile"+exName;//파일 저장이름 :아이디 +프로필
 			String filePath = saveDir + saveName;//패스 
-			String saveprofilename = "http://localhost:8088/gaeat01/upload/user/"+joinvo.getId()+"/"+saveName;
+			String saveprofilename = "http://localhost:8088/gaeat/upload/user/"+joinvo.getId()+"/"+saveName;
 			
 		try {
 			byte[] fileData = file.getBytes(); // 아직 메모리에 있음(fileoutputstream사용 필요)
@@ -73,8 +74,15 @@ public class UserService {
 		joinvo.setProfile(saveprofilename);
 		
 		uDao.UserLogin(joinvo);
-		uDao.RecipeBookinsert(joinvo);
-			return uDao.selectUser1(joinvo);
+	
+		
+		
+		
+		SocialUserVo vo1 =  uDao.selectUser1(joinvo);
+		System.out.println("리스트:"+joinvo.toString());
+		System.out.println("리스트2"+vo1.toString());
+		uDao.RecipeBookinsert(vo1);
+			return vo1;
 	}
 	
 	
@@ -125,7 +133,7 @@ public class UserService {
 		String exName = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));//확장자
 		String saveName = updatevo.getId()+"_"+"profile"+exName;//파일 저장이름 :아이디 +프로필
 		String filePath = saveDir + saveName;//패스 
-		String saveprofilename ="http://localhost:8088/gaeat01/upload/user/"+updatevo.getId()+"/"+saveName;
+		String saveprofilename ="http://localhost:8088/gaeat/upload/user/"+updatevo.getId()+"/"+saveName;
 			
 		try {
 			byte[] fileData = file.getBytes(); // 아직 메모리에 있음(fileoutputstream사용 필요)

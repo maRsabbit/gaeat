@@ -499,14 +499,18 @@
 												class="form-control" type="text"
 												placeholder="aaa@naver.com 의 형식으로 입력해주세요. " required>
 											<input name="name" class="form-control" type="text"
-												placeholder="사용자 이름을 입력해 주세요 . " required> <input
+												placeholder="사용자 이름을 입력해 주세요 . " required> 
+												<input
 												name="nickname" class="form-control" type="text"
-												placeholder="사용하실 닉네임을 입력해 주세요 . " required> <input
+												placeholder="사용하실 닉네임을 입력해 주세요 . " required> 
+												<input
 												name="password" class="form-control" type="password"
-												placeholder="사용자 비밀번호를 입력해 주세요. " required> <input
+												placeholder="사용자 비밀번호를 입력해 주세요. " required> 
+												<input
 												name="userintro" class="form-control" type="text"
 												height="20px" placeholder="사용자 홈에 표시될 간단한 자기 소개를 작성해 주세요."
-												required> <input name="socialcheck"
+												required> 
+												<input name="socialcheck"
 												style="display: none" value="none" id="imgchange">
 										</div>
 										<div class="modal-footer">

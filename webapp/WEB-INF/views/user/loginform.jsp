@@ -269,15 +269,7 @@
 	</div>
 	<!-- 최초 로그인 폼 끝 -->
 	<script type="text/javascript">
-		/* #####################################################################
-		 #
-		 #   Project       : Modal Login with jQuery Effects
-		 #   Author        : Rodrigo Amarante (rodrigockamarante)
-		 #   Version       : 1.0
-		 #   Created       : 07/29/2015
-		 #   Last Change   : 08/04/2015
-		 #
-		 ##################################################################### */
+		
 
 		$(function() {
 

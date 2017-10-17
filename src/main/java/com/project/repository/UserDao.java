@@ -36,8 +36,9 @@ public class UserDao {
 				int a = sqlSession.insert("Sosialinsert",vo);
 					return a;
 				}
-			public int RecipeBookinsert(SocialUserVo vo){
-				int a = sqlSession.insert("RecipeBookinsert");
+			public int RecipeBookinsert(SocialUserVo vo1){
+				int a=vo1.getChef_no();
+				sqlSession.insert("RecipeBookinsert",a);
 					return a;
 				}
 			
@@ -47,9 +48,15 @@ public class UserDao {
 					}
 				
 				public int UserLogin(SocialUserVo joinvo){
-						int a = sqlSession.insert("Userinsert",joinvo);
+						int a = sqlSession.insert("Userinsert",joinvo);						
 							return a;
 						}
+				public int getnumber(SocialUserVo joinvo) {
+					String Id=joinvo.getId();
+					int a=sqlSession.selectOne("getnumber", Id);
+					return a;
+				}
+				
 				
 				public List<String> ingredients() {
 					List<String> ingreList = new ArrayList<String>();

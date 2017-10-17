@@ -172,7 +172,9 @@ public class UserController {
 	public String join(@ModelAttribute  SocialUserVo joinVo,HttpSession session, @RequestParam("file") MultipartFile file) {
 		System.out.println("join :"+ joinVo.toString());
 		System.out.println(file.toString());
+		
 		SocialUserVo authUser=uService.joinUser(joinVo,file);
+		
 		session.setAttribute("authUser",authUser);//세션에 넣어줌 
 		System.out.println("세션 안의 값1"+authUser);
 		

@@ -175,11 +175,11 @@ function preview_images(){
 	 		<div class="col-md-4 col-sm-6 col-xs-12">
 	      		<div class="text-center" >
 					<!--세션에있는 프로필사진 / 바꿀이미지 보여질 이미지 창 -->
-					<div id="image_preview" >
+					<div id="image_preview1" >
 					<img src="${authUser.profile}" width="100" class="avatar img-circle img-thumbnail" alt="avatar" >
 					</div>
 		        	<h6>바꿀 프로필 사진을 선택 하세요 . </h6>
-		        	<input type="file" class="text-center center-block well well-sm" id="images" name = "file"  onchange="preview_images();">
+		        	<input type="file" class="text-center center-block well well-sm" id="images" name = "file"  onchange="preview_images1();">
 		        	
 	      		</div>
 	   		</div>
@@ -297,7 +297,7 @@ function preview_images(){
 		   
 				
 			</div><!--  <div class="col-md-8 col-sm-6 col-xs-12 personal-info"> -->
-			<input type="submit" value="저장하기 " style="margin-bottom:20px ;margin-top:2px ;margin-left:50%"> 
+			<input type="submit" value="저장하기 " style="margin-bottom:20px ;margin-top:2px ;margin-left:50%" onclick="alert('저장되었습니다.')">
 			
 	  </form>								
 	</div>

@@ -19,6 +19,8 @@
 		 ]]>
 	</select>
 	
+	
+	
 	<select id = "selectUser1" parameterType = "com.project.vo.SocialUserVo" resultType= "com.project.vo.SocialUserVo">
 		 <![CDATA[
 		 		select profile profile ,email Id,name ,nickname,social_check socialcheck,chef_no ,self_intro userintro, type  from chef where email =#{Id} and password=#{password}
@@ -32,7 +34,7 @@
 	</select>
 	
 	
-	<insert id="RecipeBookinsert" parameterType = "com.project.vo.SocialUserVo" >
+	<insert id="RecipeBookinsert" parameterType = "int" >
 		<![CDATA[
 		 insert into recipebook values(recipebook_seq.nextval,'나의 첫번째 레시피북',#{chef_no})
 		 ]]>
