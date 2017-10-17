@@ -160,8 +160,10 @@
 	<div class="container">
 		<div class="row" id="recipeList"></div>
 	</div>
-	<div class="container">
-		<div class="row  jPager" id="pagination"></div>
+	<div class="container-fluid">
+		<div class="row  jjPager">
+			<div class="row  jPager" id="pagination"></div>
+		</div>
 	</div>
 
 	<br>
@@ -192,15 +194,23 @@
 	-webkit-line-clamp: 3
 }
 
+.jjPager {
+	margin-top: 50px;
+	height: 100;
+	width: 100%;
+	text-align:center; 
+}
+
 .jPager {
-	margin-left: auto;
-	margin-right: auto;
-	position: center;
-	vertical-align: middle;
+	position: relative;
+	width: 50%;
+	height: 50%;
+	display:inline-block; 
+	padding-left: 220px;
 }
 
 .pageNumT {
-	margin-left: 15px;
+	margin-left:20px;
 	width: 30px;
 	text-align: center;
 	padding-right: 10px;
@@ -214,13 +224,20 @@
 }
 
 .jumpBtn {
+	background-color: ivory;
 	margin: 15px;
 	padding-left: 10px;
 	padding-right: 10px;
+	border-radius: 5px;
+	border:0.5px solid;
 }
 
 .jumpBtn2 {
+	background-color: ivory;
+	margin-right: 5px;
 	width: 40px;
+	border-radius: 40px;
+	border:0.5px solid;
 }
 </style>
 
@@ -390,23 +407,23 @@
 		var str = "";
 		str += "<div class=\"input-group   col-lg-6  col-md-6  col-sm-6 col-xs-12\">";
 		if (page.page == 1) { //련재페이지가 1이면 표시하지 않는다.
-			str += "<input class=\"jumpBtn2\"  type=\"button\" value=\"First\" style=\"display: none;\">";
-			str += "<input class=\"jumpBtn2\"  type=\"button\" value=\"Prev\"  style=\"display: none;\">";
+			str += "<input class=\"jumpBtn2\"  type=\"button\" value=\"<<\" style=\"display: none;\">";
+			str += "<input class=\"jumpBtn2\"  type=\"button\" value=\"<\"  style=\"display: none;\">";
 		} else {
-			str += "<input class=\"jumpBtn2\"  type=\"button\" value=\"First\" onClick=\"gotoPage(1)\">";
-			str += "<input class=\"jumpBtn2\"  type=\"button\" value=\"Prev\" onClick=\"gotoPage("
+			str += "<input class=\"jumpBtn2\"  type=\"button\" value=\"<<\" onClick=\"gotoPage(1)\">";
+			str += "<input class=\"jumpBtn2\"  type=\"button\" value=\"<\" onClick=\"gotoPage("
 					+ page.prevPage + ")\">";
 		}
 		str += "<input type=\"text\" id=\"currNoBox\" value="+page.page+" class=\"pageNumT\" >";
 		str += "<label class=\"pageNumL\" > / " + page.totPage + "</label>";
 		str += "<input  class=\"jumpBtn\" type=\"button\" value=\"이동\" onClick=\"gotoPage2()\">";
 		if (page.page == page.totPage) {
-			str += "<input class=\"jumpBtn2\"  type=\"button\" value=\"Next\" style=\"display: none;\" >";
-			str += "<input class=\"jumpBtn2\"  type=\"button\" value=\"Last\" style=\"display: none;\" >";
+			str += "<input class=\"jumpBtn2\"  type=\"button\" value=\">\" style=\"display: none;\" >";
+			str += "<input class=\"jumpBtn2\"  type=\"button\" value=\">>\" style=\"display: none;\" >";
 		} else {
-			str += "<input class=\"jumpBtn2\"  type=\"button\" value=\"Next\" onClick=\"gotoPage("
+			str += "<input class=\"jumpBtn2\"  type=\"button\" value=\">\" onClick=\"gotoPage("
 					+ page.nextPage + ")\">";
-			str += "<input class=\"jumpBtn2\"  type=\"button\" value=\"Last\" onClick=\"gotoPage("
+			str += "<input class=\"jumpBtn2\"  type=\"button\" value=\">>\" onClick=\"gotoPage("
 					+ page.totPage + ")\">";
 		}
 		str += "</div>";
